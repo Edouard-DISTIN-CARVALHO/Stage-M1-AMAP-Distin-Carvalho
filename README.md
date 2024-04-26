@@ -1,4 +1,8 @@
-# Stage Master 1 Biodiversité Ecologie Evolution parcours Ecosystèmes : Ecologie fonctionnelle et conceptualisation des écosystèmes aquatiques et terrestres
+# Stage Master 1 
+
+M1 Biodiversité Ecologie Evolution parcours Ecosystèmes : Ecologie fonctionnelle et conceptualisation des écosystèmes aquatiques et terrestres
+
+Encadrante: Imma Oliveras Menor 
 
 **Sujet : La productivité primaire des litières des feuilles soumis à un régime de feu dans le biome Cerrado au Brésil.**
 

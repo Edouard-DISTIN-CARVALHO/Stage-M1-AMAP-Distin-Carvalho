@@ -1,0 +1,151 @@
+---
+title: "Stage M1 AMAP - Normalização dos dados"
+author: "Edouard DISTIN CARVALHO"
+format: pdf
+editor: visual
+---
+
+**Tópico**: A produtividade primária da serapilheira de folhas sujeitas a um regime de fogo no bioma Cerrado no Brasil
+
+**Questão:**
+
+-   Sob qual regime de fogo a produtividade primária da serapilheira é a mais importante?
+
+-   Como as plantas se adaptaram a esses regimes?
+
+**Hipóteses:**
+
+1.  Plantas sujeitas a incêndios mais frequentes teriam a produtividade primária mais alta.
+
+2.  As folhas teriam uma produtividade primária mais alta sob um regime de fogo frequente.
+
+3.  A estação seca apresentaria as taxas mais altas de produtividade primária sob um regime de fogo frequente.
+
+## Normalisação dos dados
+
+```{r library, include=FALSE}
+library(dplyr)
+library(lme4)
+library(emmeans)
+library(ggplot2)
+```
+
+```{r dados Area basal}
+#| echo: true
+
+setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Dados")
+dados_basal <- read.csv("ESA_basal_area.csv", header = TRUE, sep = ",", dec =".")
+dados_basal$basal_area <- as.numeric(dados_basal$basal_area)
+dados_basal <- mutate(dados_basal, basal_area = ifelse(is.na(basal_area), 0, basal_area))
+
+# Somme des aires basales par mois et par parcelle de chaque année
+dados_basal_tot <- dados_basal%>% group_by(plot_code, year) %>%
+  summarize(somme_basal_area = sum(basal_area, na.rm = TRUE))
+
+```
+
+### Estimação dos dados faltantes
+
+```{r estimação dos dados faltante}
+impute_missing <- function(data) {
+  lm_model <- lm(somme_basal_area ~ year, data = data)
+  missing_years <- data.frame(year = c(2018, 2020, 2022))
+  predictions <- predict(lm_model, newdata = missing_years)
+  missing_years$somme_basal_area <- predictions
+  return(missing_years)}
+
+dados_basal_est <- dados_basal_tot %>%
+  do(impute_missing(.))
+
+dados_basal_2 <- merge(dados_basal_est, dados_basal_tot, by = c("plot_code", "year","somme_basal_area"), all = TRUE)
+
+dados_basal_2  <- dados_basal_2  %>%  mutate(fire_regime = plot_code)
+names(dados_basal_2 )[names(dados_basal_2 ) == "dados_basal_2$fire_regime"] <- "fire_regime"
+dados_basal_2$fire_regime <- factor(dados_basal_2$fire_regime, 
+ levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
+ labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+
+color <- c("control_bi" = "green", "biennial" = "green",
+           "control_tri" = "blue", "triennial" = "blue",
+           "control_an" = "red", "annual" = "red")
+
+linetype <- c("control_bi" = "solid", "biennial" = "dashed",
+              "control_tri" = "solid", "triennial" = "dashed",
+              "control_an" = "solid", "annual" = "dashed")
+
+ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, color = fire_regime, linetype = fire_regime)) + 
+  geom_point()  + 
+  geom_line() + 
+  scale_color_manual(values = color) +
+  scale_linetype_manual(values = linetype) +
+  scale_x_continuous(breaks = seq(2016, 2023, by = 1)) +
+  labs(title = "Evolução da área basal por parcelas segundo os censos", x = "Anos de censo", y = "Área basal (m2/y)", color = "Tipos de parcelas") +  theme_classic()
+
+```
+
+### Normalização com os dados de produtividade primaria
+
+```{r dados fire}
+setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Dados")
+dados <- read.csv("ESA_litterfall_NPP.csv", header = TRUE, sep = ",", dec =".") 
+
+dados <- na.omit(dados)
+dados <- dados[dados$year != 2024, ]
+dados$date <- as.Date(dados$date, format = "%d/%m/%Y")
+dados <- dados %>%  mutate(fire_regime = plot_code)
+names(dados)[names(dados) == "dados$fire_regime"] <- "fire_regime"
+dados$fire_regime <- factor(dados$fire_regime,
+levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
+labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+
+```
+
+```{r Normalização}
+# Boucle sur chaque année unique dans dados_basal_2$year
+dados_norm <- mutate(dados)
+
+for (year in unique(dados_basal_2$year)) {
+  if (year %in% dados_norm$year && year %in% dados_basal_2$year) {
+    for (plot_code in unique(dados_basal_2$plot_code)) {
+      if (plot_code %in% dados_norm$plot_code && plot_code %in% dados_basal_2$plot_code) {
+        dados_norm[dados_norm$year == year & dados_norm$plot_code == plot_code, 8:14] <-
+          dados_norm[dados_norm$year == year & dados_norm$plot_code == plot_code, 8:14] /
+          dados_basal_2[dados_basal_2$year == year & dados_basal_2$plot_code == plot_code, "somme_basal_area"]
+      }
+    }
+  }
+}
+
+# Dados normalizados com a area_basal
+dados_norm$date <- as.Date(dados_norm$date, format = "%d/%m/%Y")
+ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) + geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária total normalizada ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária total (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+
+# Dados brutos 
+ggplot(dados) +  aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regime) +
+ geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária total bruta ao longo do tempo",  x = "Datas de coleta", y = "Produtividade primária total (MgC_ha_year)",
+  color ="Regime de fogo") + scale_x_date(date_breaks = "1 year", 
+     date_labels = "%Y") + theme_classic()
+    
+```
+
+### Composição da serrapilheira
+
+```{r Composição normalizada}
+names(dados_norm)[8:14] <- c("leaves", "twigs", "flower", 
+                           "fruits", "seeds", "outros", "total_MgC_m2")
+ggplot(dados_norm,aes(x = date, y = leaves, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária das folhas da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados_norm,aes(x = date, y = twigs, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária dos ramos da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados_norm,aes(x = date, y = flower, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária das flores da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados_norm,aes(x = date, y = seeds, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária dos sementes da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados_norm,aes(x = date, y = outros, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  +  labs(title = "Produtividade primária dos outros componentes da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+```
+
+```{r Composição não normalizada}
+names(dados)[8:14] <- c("leaves", "twigs", "flower", 
+                             "fruits", "seeds", "outros", "total_MgC_m2")
+ggplot(dados,aes(x = date, y = leaves, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária das folhas da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados,aes(x = date, y = twigs, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária dos ramos da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados,aes(x = date, y = flower, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária das flores da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados,aes(x = date, y = seeds, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária dos sementes da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+ggplot(dados,aes(x = date, y = outros, color = fire_regime)) +  geom_point() + geom_smooth(method = "gam")  + labs(title = "Produtividade primária dos outros componentes da serrapilheira ao longo do tempo",    x = "Datas de coleta", y = "Produtividade primária (MgC_m2)", color = "Regime de fogo") + scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+```

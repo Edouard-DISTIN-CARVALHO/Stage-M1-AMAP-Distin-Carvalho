@@ -23,5 +23,6 @@ Etape du projet :
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Exploration/1_Normalisation.R")
 
+## Etape 2 : Composition 
 
-
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Exploration/2_Composition.R")

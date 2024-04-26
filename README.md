@@ -2,6 +2,8 @@
 
 M1 Biodiversité Ecologie Evolution parcours Ecosystèmes : Ecologie fonctionnelle et conceptualisation des écosystèmes aquatiques et terrestres
 
+Laboratoire : UMR AMAP - IRD 
+
 Encadrante: Imma Oliveras Menor 
 
 **Sujet : La productivité primaire des litières des feuilles soumis à un régime de feu dans le biome Cerrado au Brésil.**

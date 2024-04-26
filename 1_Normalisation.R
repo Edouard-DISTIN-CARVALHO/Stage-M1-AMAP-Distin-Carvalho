@@ -76,6 +76,7 @@ dados <- na.omit(dados)
 dados <- dados[dados$year != 2024, ]
 
 # Création d'une nouvelle colonne basé sur le régime de feu
+dados$date <- as.Date(dados$date, format = "%d/%m/%Y")
 dados <- dados %>%  mutate(fire_regime = plot_code)
 names(dados)[names(dados) == "dados$fire_regime"] <- "fire_regime"
 dados$fire_regime <- factor(dados$fire_regime,
@@ -107,8 +108,8 @@ ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_re
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
 
 # Données brute 
-dados$date <- as.Date(dados$date, format = "%d/%m/%Y")
-ggplot(dados) +  aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regime) +
+
+ggplot(dados, aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regime)) +
   geom_point() + geom_smooth(method = "gam")  + 
   labs(title = "Evolution de la productivité primaire totale brute au cours du temps",    
        x = "Date de collecte", y = "Productivité primaire totale (MgC_ha_year)",

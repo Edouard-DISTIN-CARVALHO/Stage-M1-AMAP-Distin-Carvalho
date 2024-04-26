@@ -21,8 +21,8 @@ Etape du projet :
 
 ## Etape 1 : Normalisation
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Exploration/1_Normalisation.R")
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Normalisation.R")
 
 ## Etape 2 : Composition 
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Exploration/2_Composition.R")
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R")

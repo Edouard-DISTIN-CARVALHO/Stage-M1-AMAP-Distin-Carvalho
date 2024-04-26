@@ -17,3 +17,10 @@ Encadrante: Imma Oliveras Menor
 2) Les feuilles présenteraient une productivité primaire plus fortes sous un régime de feu fréquent.
 3) La saison sèche présentairait des taux de productivité les plus haute à plus hautes fréquences de feu.
 
+Etape du projet : 
+
+1) Normalisation productivité primaire avec l'aire basale 
+2) Etude de la composition des litières 
+3) Etude de la saisonnalité de la productivité primaire 
+
+

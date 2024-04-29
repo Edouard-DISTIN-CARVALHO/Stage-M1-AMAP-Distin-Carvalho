@@ -60,6 +60,19 @@ linetype <- c("control_bi" = "solid", "biennial" = "dashed",
               "control_an" = "solid", "annual" = "dashed")
 
 library(ggplot2)
+dados_basal_tot  <- dados_basal_tot  %>%  mutate(fire_regime = plot_code)
+names(dados_basal_tot )[names(dados_basal_tot ) == "dados_basal_tot$fire_regime"] <- "fire_regime"
+dados_basal_tot$fire_regime <- factor(dados_basal_tot$fire_regime, 
+                                      levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
+                                      labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+ggplot(dados_basal_tot, aes(x = year, y = somme_basal_area, color = fire_regime, 
+                          linetype = fire_regime)) +  geom_point() +  geom_line() +   
+  scale_color_manual(values = color) + scale_linetype_manual(values = linetype) +
+  scale_x_continuous(breaks = seq(2016, 2023, by = 1)) +
+  labs(title = "Evolution de l'aire basale avec prédiction au cours du temps", 
+       x = "Années", y = "Aire Basale (m²/y)", color = "Type de parcelle") +  
+  theme_classic()
+
 ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, color = fire_regime, 
                           linetype = fire_regime)) +  geom_point() +  geom_line() +   
   scale_color_manual(values = color) + scale_linetype_manual(values = linetype) +
@@ -101,18 +114,30 @@ for (year in unique(dados_basal_2$year)) {
 # Donnée normalisée
 dados_norm$date <- as.Date(dados_norm$date, format = "%d/%m/%Y")
 ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point() + geom_smooth(method = "gam")  + 
-  labs(title = "Evolution de la productivité primaire totale normalisée au cours du temps",    
+  geom_smooth(method = "gam")  + 
+  labs(title = "Evolution de la productivité primaire totale normalisée",    
+       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
+       color = "Regime de feu") + 
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+
+ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
+  geom_point()  + 
+  labs(title = "Evolution de la productivité primaire totale normalisée",    
        x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
        color = "Regime de feu") + 
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
 
 # Données brute 
-
 ggplot(dados, aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regime)) +
-  geom_point() + geom_smooth(method = "gam")  + 
-  labs(title = "Evolution de la productivité primaire totale brute au cours du temps",    
+  geom_smooth(method = "gam")  + 
+  labs(title = "Evolution de la productivité primaire totale brute",    
        x = "Date de collecte", y = "Productivité primaire totale (MgC_ha_year)",
-       color ="Regime de fogo") + scale_x_date(date_breaks = "1 year", 
+       color ="Regime de feu") + scale_x_date(date_breaks = "1 year", 
                                                date_labels = "%Y") + theme_classic()
 
+ggplot(dados, aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regime)) +
+  geom_point()  + 
+  labs(title = "Evolution de la productivité primaire totale brute",    
+       x = "Date de collecte", y = "Productivité primaire totale (MgC_ha_year)",
+       color ="Regime de feu") + scale_x_date(date_breaks = "1 year", 
+                                              date_labels = "%Y") + theme_classic()

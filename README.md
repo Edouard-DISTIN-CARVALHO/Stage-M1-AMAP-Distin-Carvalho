@@ -26,3 +26,7 @@ source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Normalisation.R"
 ## Etape 2 : Composition 
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R")
+
+## Etape 3 : Etude de la saisonnalité 
+
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_Saisonalite.R")

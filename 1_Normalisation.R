@@ -61,12 +61,12 @@ linetype <- c("control_bi" = "solid", "biennial" = "dashed",
 
 library(ggplot2)
 ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, color = fire_regime, 
-  linetype = fire_regime)) +  geom_point() +  geom_line() +   
+                          linetype = fire_regime)) +  geom_point() +  geom_line() +   
   scale_color_manual(values = color) + scale_linetype_manual(values = linetype) +
   scale_x_continuous(breaks = seq(2016, 2023, by = 1)) +
   labs(title = "Evolution de l'aire basale avec prédiction au cours du temps", 
        x = "Années", y = "Aire Basale (m²/y)", color = "Type de parcelle") +  
-        theme_classic()
+  theme_classic()
 
 # Chargement donnée productivité primaire 
 dados <- read.csv("ESA_litterfall_NPP.csv", header = TRUE, sep = ",", dec =".") 
@@ -113,5 +113,6 @@ ggplot(dados, aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regim
   geom_point() + geom_smooth(method = "gam")  + 
   labs(title = "Evolution de la productivité primaire totale brute au cours du temps",    
        x = "Date de collecte", y = "Productivité primaire totale (MgC_ha_year)",
-         color ="Regime de fogo") + scale_x_date(date_breaks = "1 year", 
-              date_labels = "%Y") + theme_classic()
+       color ="Regime de fogo") + scale_x_date(date_breaks = "1 year", 
+                                               date_labels = "%Y") + theme_classic()
+

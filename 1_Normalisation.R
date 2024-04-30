@@ -113,7 +113,7 @@ for (year in unique(dados_basal_2$year)) {
 
 # Donnée normalisée
 dados_norm$date <- as.Date(dados_norm$date, format = "%d/%m/%Y")
-ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
+ggplot(dados_norm, aes(x = date, y = total_MgC_m2, color=fire_regime)) +
   geom_smooth(method = "gam")  + 
   labs(title = "Evolution de la productivité primaire totale normalisée",    
        x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 

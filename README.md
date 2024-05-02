@@ -19,9 +19,9 @@ Etape du projet :
 2)  Etude de la composition des litières
 3)  Etude de la saisonnalité de la productivité primaire
 
-## Etape 1 : Normalisation
+## Etape 1 : Standardisation
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Normalisation.R")
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R")
 
 ## Etape 2 : Composition 
 

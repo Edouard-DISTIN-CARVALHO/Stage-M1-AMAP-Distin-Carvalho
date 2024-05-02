@@ -17,7 +17,7 @@ library(dplyr)
 dados_basal$basal_area <- as.numeric(dados_basal$basal_area)
 dados_basal <- mutate(dados_basal, basal_area = ifelse(is.na(basal_area), 0, basal_area))
 
-# Somme des aires basales par mois et par parcelle de chaque année
+#### Calcul des aires basales par parcelle de chaque année ####
 dados_basal_tot <- dados_basal%>% group_by(plot_code, year) %>%
   summarize(somme_basal_area = sum(basal_area, na.rm = TRUE))
 
@@ -26,13 +26,11 @@ impute_missing <- function(data) {
   # Modèle de régression linéaire pour estimer les valeurs manquantes
   lm_model <- lm(somme_basal_area ~ year, data = data)
   
-  # Créer un ensemble de données avec les années manquantes
+  # Ensemble de données avec les années manquantes
   missing_years <- data.frame(year = c(2018, 2020, 2022))
   
   # Prédire les valeurs manquantes de basal_area
   predictions <- predict(lm_model, newdata = missing_years)
-  
-  # Ajouter les prédictions au jeu de données
   missing_years$somme_basal_area <- predictions
   
   return(missing_years)}
@@ -49,12 +47,10 @@ dados_basal_2$fire_regime <- factor(dados_basal_2$fire_regime,
                                     levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
                                     labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
 
-# Définir la palette de couleurs
 color <- c("control_bi" = "green", "biennial" = "green",
            "control_tri" = "blue", "triennial" = "blue",
            "control_an" = "red", "annual" = "red")
 
-# Definir le type de ligne 
 linetype <- c("control_bi" = "solid", "biennial" = "dashed",
               "control_tri" = "solid", "triennial" = "dashed",
               "control_an" = "solid", "annual" = "dashed")
@@ -81,7 +77,7 @@ ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, color = fire_regime,
        x = "Années", y = "Aire Basale (m²/y)", color = "Type de parcelle") +  
   theme_classic()
 
-# Chargement donnée productivité primaire 
+#### Application au donnée de productivité primaire ####
 dados <- read.csv("ESA_litterfall_NPP.csv", header = TRUE, sep = ",", dec =".") 
 
 # Suppresion des NA et donnés 2024

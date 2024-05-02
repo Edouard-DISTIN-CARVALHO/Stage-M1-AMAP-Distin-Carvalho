@@ -14,7 +14,7 @@ library(ade4)
 library(lme4)
 library(ggplot2)
 
-##### Différence d'amplitude moyenne entre les pics de chaque année pour chaque régime #####
+### Différence d'amplitude moyenne entre les pics de chaque année pour chaque régime #####
 
 # Amplitude entre les moyennes des régimes :
 AmplitudeFire <- MeanFire %>%
@@ -60,8 +60,13 @@ ggplot(AmplitudeFire, aes(x = year, y = Amplitude_twigs, shape = fire_regime, co
   scale_linetype_manual(values = linetype) +
   theme_classic()
 
+# Modélisation : 
 
-##### Différence de jour entre les pics de chaque année #####
+
+
+
+
+### Différence de jour entre les pics de chaque année #####
 
 # Convertir la variable date en format de date
 dados_norm$date <- as.Date(dados_norm$date)

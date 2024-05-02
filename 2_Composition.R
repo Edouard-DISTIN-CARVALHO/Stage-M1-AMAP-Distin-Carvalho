@@ -7,7 +7,7 @@
 library(tidyr)
 library(ggplot2)
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Normalisation.R")
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R")
 
 names(dados_norm)[8:14] <- c("leaves", "twigs", "flower", 
                              "fruits", "seeds", "outros", "total_MgC_m2")

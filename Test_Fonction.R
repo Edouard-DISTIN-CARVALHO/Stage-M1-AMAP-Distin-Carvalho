@@ -1,19 +1,25 @@
-ListX<-seq(0,100,length=1001)
+# Donnée réelle : 
+ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
+  geom_smooth(method="gam")  + 
+  labs(title = "Evolution de la productivité primaire totale normalisée",    
+       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
+       color = "Regime de feu") + 
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
 
-myFunc<-function(x,a=0.1,A=2){ return((A*exp(-a*x)))}
-plot(x=ListX,y=myFunc(x=ListX,a=2),type="l",col="green")
+# Modèle : 
 
+ListX<-seq(0,6,length=1001)
 
-# Définition de la fonction sinus à oscillation amortie
-damped_sinus <- function(t, A, omega, gamma, phi) {
-  A * exp(-gamma * t) * sin(omega * t + phi)
-}
+myFuncA<-function(x, a= 6, b = 0.5, c = 1.2)
+{ return(exp(-b*x)*sin(a*x-c)+ b*c) }
+myFuncB <- function(x, a = 3, b = 0.5, c = 1.2) 
+{ return(exp(-b*x)*sin(a*x-c)+ b*c) }
 
-t <- seq(0, 7, length.out = 100)  # Séquence de temps
-A <- 1  # Amplitude
-omega <- 1.5*pi+1  # Fréquence angulaire
-gamma <- 0.5  # Facteur d'amortissement
-phi <- 1-pi/3  # Phase
-y <- damped_sinus(t, A, omega, gamma, phi)
-plot(t, y, type = "l", main = "Modèle théorique", xlab = "Temps", ylab = "NPP")
- 
+plot(x = ListX , y = myFuncA(x=ListX, a = 6, b = 0.5, c = 1.2), 
+     type="l", col="green", main = "Modèle théorique", 
+     xlab = "Temps", ylab = "NPP",)
+lines(x = ListX, y = myFuncB(x = ListX, a = 3, b = 0.5, c = 1.2), 
+      type = "l", col = "red")
+legend("topright", legend = c("Courbe d'effet du feu 2018-2021", "Courbe d'effet du feu 2021-2023"), 
+       col = c("green","red"), lty = 1, cex = 0.8)
+

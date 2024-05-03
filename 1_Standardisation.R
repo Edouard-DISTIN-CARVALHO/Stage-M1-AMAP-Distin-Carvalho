@@ -137,3 +137,4 @@ ggplot(dados, aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regim
        x = "Date de collecte", y = "Productivité primaire totale (MgC_ha_year)",
        color ="Regime de feu") + scale_x_date(date_breaks = "1 year", 
                                               date_labels = "%Y") + theme_classic()
+

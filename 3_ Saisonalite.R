@@ -60,12 +60,6 @@ ggplot(AmplitudeFire, aes(x = year, y = Amplitude_twigs, shape = fire_regime, co
   scale_linetype_manual(values = linetype) +
   theme_classic()
 
-# Modélisation : 
-
-
-
-
-
 ### Différence de jour entre les pics de chaque année #####
 
 # Convertir la variable date en format de date
@@ -79,10 +73,10 @@ peaks <- dados_norm %>%
 
 # Calculer le nombre de jours entre les dates des pics de "leaves" et "twigs"
 peaks <- peaks %>% mutate(days_between_leaves = as.integer(date_max_leaves - lag(date_max_leaves)))
+peaks <- peaks %>% mutate(days_between_twigs = as.integer(date_max_twigs - lag(date_max_twigs)))
 peaks <- peaks[peaks$year != 2018, ]
 
 #peaks <- mutate(peaks, days_between_leaves = ifelse(is.na(days_between_leaves), 0, days_between_leaves))
-#peaks <- peaks %>% mutate(days_between_twigs = as.integer(date_max_twigs - lag(date_max_twigs)))
 #peaks <- mutate(peaks, days_between_twigs = ifelse(is.na(days_between_twigs), 0, days_between_twigs))
 
 ggplot(peaks, aes(x = year)) +

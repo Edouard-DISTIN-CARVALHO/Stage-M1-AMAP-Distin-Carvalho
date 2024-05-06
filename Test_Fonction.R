@@ -1,80 +1,227 @@
-# Donnée réelle : 
-dados_an <- dados[dados$fire_regime == "annual",]
-ggplot(dados_an, aes(x = date, log= "y", y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point()  + 
-  labs(title = "Evolution de la productivité primaire totale",    
-       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
-       color = "Regime de feu") + 
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-with(data=dados_an,plot(x=date,y=total_litterfall_MgC_ha_year,log="y"))
+#                          4/ Modélisation                                      ----
 
-dados_bi <- dados[dados$fire_regime == "biennial",]
-ggplot(dados_bi, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point()  + 
-  labs(title = "Evolution de la productivité primaire totale",    
-       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
-       color = "Regime de feu") + 
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-dados_tri <- dados[dados$fire_regime == "triennial",]
-ggplot(dados_tri, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point()  + 
-  labs(title = "Evolution de la productivité primaire totale",    
-       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
-       color = "Regime de feu") + 
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic()
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Saisonalite.R") 
 
-dados_ctan <- dados[dados$fire_regime == "control_an",]
-ggplot(dados_ctan, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point()  + 
-  labs(title = "Evolution de la productivité primaire totale",    
-       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
-       color = "Regime de feu") + 
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic()
+# Library : 
 
-dados_ctbi <- dados[dados$fire_regime == "control_bi",]
-ggplot(dados_ctbi, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point()  + 
-  labs(title = "Evolution de la productivité primaire totale",    
-       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
-       color = "Regime de feu") + 
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic()
+library(dplyr)
+library(ggplot2)
 
-dados_ctri<- dados[dados$fire_regime == "control_tri",]
-ggplot(dados_ctri, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_regime)) +
-  geom_point()  + 
-  labs(title = "Evolution de la productivité primaire totale",    
-       x = "Date de collecte", y = "Productivité primaire totale (MgC_m2)", 
-       color = "Regime de feu") + 
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic()
+##### Fonction modèle ###### 
 
-
-
-# Modèle : 
-
-ListX<-seq(0,6,length=1001)
-
+# Modèle :
 myFunc<-function(x, a= 6, b = 0.5, c = 1.2,Base=25,p=1)
 { return( Base*exp(-b*x)*(sin(2*pi*(x-c)/a)+1)^p) }
 
-ListDate<-seq.Date(from=min(dados$date,na.rm=TRUE),to=max(dados$date,na.rm=TRUE),by=1)
-with(data=dados_an,plot(x=date,y=total_litterfall_MgC_ha_year))
+# Base : valeur de départ 
+# a : période d'oscillations 
+# b : coefficient d'écrasement des oscillations 
+# c : paramètre de positions des oscillations sur l'axe des x 
+# p : paramètre d'écrasement des oscillations 
+
+# Mise en forme des donnnées réelles : 
+dados_sum <- dados_norm %>%  group_by(plot_code, date) %>%
+  summarize(total_MgC_m2 = sum(total_MgC_m2, na.rm = TRUE), 
+            leaves = sum(leaves, na.rm = TRUE), 
+            twigs = sum(twigs, na.rm = TRUE))
+dados_sum  <- dados_sum  %>%  mutate(fire_regime = plot_code)
+names(dados_sum )[names(dados_sum ) == "dados_sum$fire_regime"] <- "fire_regime"
+dados_sum$fire_regime <- factor(dados_sum$fire_regime, 
+                                levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
+                                labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+# Mise en format date de x 
+ListDate<-seq.Date(from=min(dados_sum$date,na.rm=TRUE),to=max(dados_sum$date,na.rm=TRUE),by=1)
+
+## Total :
+with(data=dados_sum,plot(x=date,y=total_MgC_m2, main = "Totall_Litterfall"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
-                          a = 365, b = .0002, c = 120,Base=4,p=3),col="red")
+                          a = 365, 
+                          b = .0008,
+                          c = 120,
+                          Base=4,
+                          p=3),col="red")
 
-dados_an$Jour<-as.numeric(dados_an$date-min(dados_an$date,na.rm=TRUE))
-NLS<-nls(data=dados_an,formula=total_litterfall_MgC_ha_year~myFunc(x=Jour, a = a, b = b, c = c,Base=Base),
-         start=c(a = 365, b = .0004, c = 120,Base=4,p=3),control=list(maxiter=5000))
-predNLS<-predict(NLS,newdata=data.frame(Jour=ListDate))
-lines(x=ListDate,y=predNLS,col="cyan")
 
-with(data=dados_an[dados_an$date>as.Date("2020-01-01")&dados_an$date<as.Date("2021-01-01"), ],plot(x=date,y=total_litterfall_MgC_ha_year,log="",col=sub_plot))
-with(data=dados_an,plot(x=date,y=total_litterfall_MgC_ha_year,log="",col=sub_plot))
+## Leaves
+with(data=dados_sum,plot(x=date,y=leaves,main = "Leaves"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 365, 
+                          b = .0006,
+                          c = 140,
+                          Base=4,
+                          p=3),col="green")
 
-for (subPlot in unique(dados_an$sub_plot)){
-  with(data=dados_an[dados_an$sub_plot==subPlot,],plot(x=date,y=total_litterfall_MgC_ha_year,main=subPlot,type="b"))
-}
+## Twigs 
+with(data=dados_sum,plot(x=date,y=twigs, main = "Twigs"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 365, 
+                          b = .0001,
+                          c = 140,
+                          Base=0.5,
+                          p=2),col="brown")
 
-dados_an <- dados_an%>% group_by(plot_code, date) %>%
-  summarize(total_litterfall_MgC_ha_year = sum(total_litterfall_MgC_ha_year, na.rm = TRUE))
+#### Etudes de l'effet des régimes de feu sur la productivité primaire totale ####
+
+### ANNUAL #####
+dados_an <- dados_sum[dados_sum$fire_regime == "annual",]
+dados_an$day<-as.numeric(dados_an$date-min(dados_an$date,na.rm=TRUE))
+
+# Total_litterfall 
+with(data=dados_an,plot(x=date,y=total_MgC_m2,main = "Annual Total_litterfall"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 365, 
+                          b = .001,
+                          c = 110,
+                          Base=3,
+                          p=3),col="red")
+
+NLS_tot_an<-nls(data=dados_an, formula = 
+           total_MgC_m2~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+     start=c(a = 365, b = .001, c = 110, Base=3, p=3), control=list(maxiter=5000))
+predNLS_tot_an<-predict(NLS_tot_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_tot_an,col="cyan")
+
+# Leaves 
+with(data=dados_an,plot(x=date,y=leaves,main = "Annual Leaves"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                             a = 365, 
+                             b = .0005,
+                             c = 140,
+                             Base=2,
+                             p=3),col="green")
+
+dados_an$day<-as.numeric(dados_an$date-min(dados_an$date,na.rm=TRUE))
+NLS_lea_an<-nls(data=dados_an, formula = 
+                  leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                start=c(a = 365, b = .0005, c = 140, Base=2, p=3), control=list(maxiter=5000))
+predNLS_lea_an<-predict(NLS_lea_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_lea_an,col="magenta")
+
+# Twigs 
+with(data=dados_an,plot(x=date,y=twigs,main = "Annual twigs"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                             a = 365, 
+                             b = .000001,
+                             c = 140,
+                             Base=0.3,
+                             p=2),col="brown")
+
+dados_an$day<-as.numeric(dados_an$date-min(dados_an$date,na.rm=TRUE))
+NLS_twg_an<-nls(data=dados_an, formula = 
+                  twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                start=c(a = 365, b = .000001, c = 140, Base=0.3, p=2), control=list(maxiter=5000))
+predNLS_twg_an<-predict(NLS_twg_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_twg_an,col="cyan")
+
+### Biannual #####
+dados_bi <- dados_sum[dados_sum$fire_regime == "biennial",]
+
+# Total_litterfall 
+with(data=dados_bi,plot(x=date,y=total_MgC_m2,main = "Biennial Total_litterfall"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 370, 
+                          b = .001,
+                          c = 100,
+                          Base=3,
+                          p=3.6),
+                          col="red", lty="dashed")
+
+dados_bi$day<-as.numeric(dados_bi$date-min(dados_bi$date,na.rm=TRUE))
+NLS_tot_bi<-nls(data=dados_bi, formula = 
+                  total_MgC_m2~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                start=c(a = 370, b = .001, c = 100, Base=3, p=3.6), control=list(maxiter=5000))
+predNLS_tot_bi<-predict(NLS_tot_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_tot_bi,col="cyan")
+
+# Leaves 
+with(data=dados_bi,plot(x=date,y=leaves,main = "Biennial Leaves"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 365, 
+                          b = .0005,
+                          c = 100,
+                          Base=2,
+                          p=3.3),col="green", lty="dashed")
+
+dados_bi$day<-as.numeric(dados_bi$date-min(dados_bi$date,na.rm=TRUE))
+NLS_lea_bi<-nls(data=dados_bi, formula = 
+                  leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                start=c(a = 365, b = .0005, c = 100, Base=2, p=3.3), control=list(maxiter=5000))
+predNLS_lea_bi<-predict(NLS_lea_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_lea_bi,col="magenta")
+
+# Twigs 
+with(data=dados_bi,plot(x=date,y=twigs,main = "Biennial twigs"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 400, 
+                          b = .000001,
+                          c = 70,
+                          Base=0.3,
+                          p=3),col="brown", lty ="dashed")
+
+dados_bi$day<-as.numeric(dados_bi$date-min(dados_bi$date,na.rm=TRUE))
+NLS_twg_bi<-nls(data=dados_bi, formula = 
+                  twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                start=c(a = 400, b = .000001, c = 70, Base=0.3, p=3), control=list(maxiter=5000))
+predNLS_twg_bi<-predict(NLS_twg_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_twg_bi,col="cyan")
+
+
+### Triannial #####
+dados_tri <- dados_sum[dados_sum$fire_regime == "triennial",]
+
+# Total_litterfall 
+with(data=dados_tri,plot(x=date,y=total_MgC_m2,main = "Triennial Total_litterfall"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 380, 
+                          b = .0008,
+                          c = 90,
+                          Base=3.2,
+                          p=3.6),
+      col="red", lty="dashed")
+
+dados_tri$day<-as.numeric(dados_tri$date-min(dados_tri$date,na.rm=TRUE))
+NLS_tot_tri<-nls(data=dados_tri, formula = 
+                   total_MgC_m2~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                 start=c(a = 380, b = .0008, c = 90, Base=3.2, p=3.6), control=list(maxiter=5000))
+predNLS_tot_tri<-predict(NLS_tot_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_tot_tri,col="cyan")
+
+# Leaves 
+with(data=dados_tri,plot(x=date,y=leaves,main = "Triennial Leaves"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 365, 
+                          b = .0005,
+                          c = 140,
+                          Base=2,
+                          p=3.9),col="green", lty="dashed")
+
+dados_tri$day<-as.numeric(dados_tri$date-min(dados_tri$date,na.rm=TRUE))
+NLS_lea_tri<-nls(data=dados_tri, formula = 
+                   leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                 start=c(a = 365, b = .0005, c = 140, Base=2, p=3.9), control=list(maxiter=5000))
+predNLS_lea_tri<-predict(NLS_lea_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_lea_tri,col="magenta")
+
+# Twigs 
+with(data=dados_tri,plot(x=date,y=twigs,main = "Triennial twigs"))
+lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
+                          a = 400, 
+                          b = .000001,
+                          c = 70,
+                          Base=0.3,
+                          p=3),col="brown", lty ="dashed")
+
+dados_tri$day<-as.numeric(dados_tri$date-min(dados_tri$date,na.rm=TRUE))
+NLS_twg_tri<-nls(data=dados_tri, formula = 
+                   twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
+                 start=c(a = 400, b = .000001, c = 70, Base=0.3, p=3), control=list(maxiter=5000))
+predNLS_twg_tri<-predict(NLS_twg_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
+lines(x=ListDate,y=predNLS_twg_tri,col="cyan")
+
+

@@ -9,15 +9,15 @@ library(ggplot2)
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R")
 
-names(dados_norm)[8:14] <- c("leaves", "twigs", "flower", 
+names(dados)[8:14] <- c("leaves", "twigs", "flower", 
                              "fruits", "seeds", "outros", "total_MgC_m2")
-dados_norm$fire_regime <- factor(dados_norm$fire_regime, levels = c("annual", "biennial", "triennial", 
+dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
   "control_an", "control_bi", "control_tri"))
 
 
 ##### Pourcentage au fil du temps et des régimes de feu #### 
 
-MeanFire100 <- dados_norm %>%
+MeanFire100 <- dados %>%
   group_by(year = lubridate::year(date), 
            month = lubridate::month(date),
            fire_regime) %>%
@@ -58,7 +58,7 @@ ggplot(dados100_fire, aes(x = date)) +
 ##### Moyenne au fil du temps #####
 
 # Extraire les moyennes pour chaque mois de chaque année pour chaque variable
-Mean <- dados_norm %>%
+Mean <- dados %>%
   group_by(year = lubridate::year(date), month = lubridate::month(date)) %>%
   summarise(leaves_mean = mean(leaves, na.rm = TRUE),
             twigs_mean = mean(twigs, na.rm = TRUE),
@@ -108,7 +108,7 @@ ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
 #### Effet des régimes de feu ####
 
 # Extraire les moyennes de chaque régime pour chaque mois de chaque année pour chaque parcelle
-MeanFire <- dados_norm %>%
+MeanFire <- dados %>%
   group_by(year = lubridate::year(date), 
            month = lubridate::month(date),
            fire_regime) %>%

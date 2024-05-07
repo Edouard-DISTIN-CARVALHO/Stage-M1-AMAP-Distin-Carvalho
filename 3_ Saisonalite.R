@@ -5,7 +5,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
+#source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
 
 library(lubridate)
@@ -63,10 +63,10 @@ ggplot(AmplitudeFire, aes(x = year, y = Amplitude_twigs, shape = fire_regime, co
 ### Différence de jour entre les pics de chaque année #####
 
 # Convertir la variable date en format de date
-dados_norm$date <- as.Date(dados_norm$date)
+dados$date <- as.Date(dados$date)
 
 # Groupement par année et recherche des dates des pics de "leaves" et "twigs"
-peaks <- dados_norm %>%
+peaks <- dados %>%
   group_by(fire_regime, year = lubridate::year(date)) %>%
   summarise(date_max_leaves = date[which.max(leaves)],
             date_max_twigs = date[which.max(twigs)])

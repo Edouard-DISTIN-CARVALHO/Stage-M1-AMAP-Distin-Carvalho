@@ -78,8 +78,8 @@ ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, color = fire_regime,
   theme_classic()
 
 #### Application au donnée de productivité primaire ####
-dados <- read.csv("ESA_litterfall_NPP.csv", header = TRUE, sep = ",", dec =".") 
-
+dados_brutos <- read.csv("ESA_litterfall_NPP.csv", header = TRUE, sep = ",", dec =".") 
+dados <- dados_brutos[-5840, ]
 # Suppresion des NA et donnés 2024
 dados <- na.omit(dados)
 dados <- dados[dados$year != 2024, ]

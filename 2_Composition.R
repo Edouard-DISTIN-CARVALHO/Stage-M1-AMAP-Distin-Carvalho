@@ -57,34 +57,21 @@ ggplot(dados100_fire, aes(x = date)) +
 
 ##### Moyenne au fil du temps #####
 
-# Extraire les moyennes pour chaque mois de chaque année pour chaque variable
+# Extraire les moyennes pour chaque date de collecte et chaque régime de feu
 Mean <- dados %>%
-  group_by(year = lubridate::year(date), month = lubridate::month(date)) %>%
-  summarise(leaves_mean = mean(leaves, na.rm = TRUE),
-            twigs_mean = mean(twigs, na.rm = TRUE),
-            flower_mean = mean(flower, na.rm = TRUE),
-            fruits_mean = mean(fruits, na.rm = TRUE),
-            seeds_mean = mean(seeds, na.rm = TRUE),
-            outros_mean = mean(outros, na.rm = TRUE)) %>%
+  group_by(date = as.Date(date), fire_regime) %>%
+  summarise(leaves = mean(leaves, na.rm = TRUE),
+            twigs = mean(twigs, na.rm = TRUE),
+            flower = mean(flower, na.rm = TRUE),
+            fruits = mean(fruits, na.rm = TRUE),
+            seeds = mean(seeds, na.rm = TRUE),
+            outros = mean(outros, na.rm = TRUE),
+            total_MgC_m2 = mean(total_MgC_m2, na.rm = TRUE)) %>%
   ungroup()
 
-# Filtrer les données pour les mois de juin à octobre et de décembre à mars
-dados_mean <- subset(Mean, month %in% 6:10 | month %in% c(12, 1, 2, 3))
-
-# Calculer la différence entre les valeurs des mois de juin à octobre et de décembre à mars pour chaque année et chaque variable
-AmplitudeMean <- dados_mean %>%
-  group_by(year) %>%
-  summarise(AmplitudeMean_leaves = max(leaves_mean) - min(leaves_mean),
-            AmplitudeMean_twigs = max(twigs_mean) - min(twigs_mean),
-            AmplitudeMean_flower = max(flower_mean) - min(flower_mean),
-            AmplitudeMean_fruits = max(fruits_mean) - min(fruits_mean),
-            AmplitudeMean_seeds = max(seeds_mean) - min(seeds_mean),
-            AmplitudeMean_outros = max(outros_mean) - min(outros_mean))
-
 # Graphique pour les valeurs moyenne
-Mean$date <- as.Date(paste(Mean$year, Mean$month, "01", sep = "-"))
+Mean$date <- as.Date(Mean$date,format = "%Y-%m-%d")
 CompoMean <- pivot_longer(Mean, cols = 3:8, names_to = "Composant", values_to = "Productivite")
-
 ggplot(CompoMean, aes(x = date, y = Productivite, color = Composant)) +
   geom_line() +
   labs(title = "Moyenne de Productivité primaire total des composantes des litières",
@@ -92,51 +79,35 @@ ggplot(CompoMean, aes(x = date, y = Productivite, color = Composant)) +
        y = "Moyenne de Productivité primaire (MgC_m2)",
        color = "Composant de la litière") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  facet_wrap(~ fire_regime) +
   theme_classic()
 
-# Graphique pour les AmplitudeMeans
-CompoAmpMean <- pivot_longer(AmplitudeMean, cols = 2:7, names_to = "Composant",
+# Calculer la différence entre les valeurs extrèmes pour chaque regime de feu
+Mean <- Mean %>%  mutate(year = year(date))
+AmplitudeMean <- Mean %>%
+  group_by(year = as.Date(year), fire_regime) %>%
+  summarise(Leaves = max(leaves) - min(leaves),
+            Twigs = max(twigs) - min(twigs),
+            Flower = max(flower) - min(flower),
+            Fruits = max(fruits) - min(fruits),
+            Seeds = max(seeds) - min(seeds),
+            Outros = max(outros) - min(outros))
+
+CompoAmpMean <- pivot_longer(AmplitudeMean, cols = 3:8, names_to = "Composant",
                              values_to = "AmplitudeMean")
 ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
   geom_line() +
-  labs(title = "Amplitude Moyenn de Productivité primaire des composantes des litières",
+  labs(title = "Amplitude Moyenne de Productivité primaire des composantes des litières",
        x = "Date de collecte",
        y = "Amplitude Moyen de Productivité primaire (MgC_m2)",
        color = "Composant de la litière") +
-  theme_classic()
-
-#### Effet des régimes de feu ####
-
-# Extraire les moyennes de chaque régime pour chaque mois de chaque année pour chaque parcelle
-MeanFire <- dados %>%
-  group_by(year = lubridate::year(date), 
-           month = lubridate::month(date),
-           fire_regime) %>%
-  summarise(leaves_meanfire =  mean(leaves, na.rm = TRUE),
-            twigs_meanfire =  mean(twigs, na.rm = TRUE),
-            flower_meanfire =  mean(flower, na.rm = TRUE),
-            fruits_meanfire =  mean(fruits, na.rm = TRUE),
-            seeds_meanfire =  mean(seeds, na.rm = TRUE),
-            outros_meanfire =  mean(outros, na.rm = TRUE)) %>%
-  ungroup()
-
-MeanFire$date <- as.Date(paste(MeanFire$year, MeanFire$month, "01", sep = "-"))
-ggplot(MeanFire, aes(x = date)) +
-  geom_line(aes(y = leaves_meanfire, color = "Leaves")) +
-  geom_line(aes(y = twigs_meanfire, color = "Twigs")) +
-  geom_line(aes(y = flower_meanfire, color = "Flower")) +
-  geom_line(aes(y = fruits_meanfire, color = "Fruits")) +
-  geom_line(aes(y = seeds_meanfire, color = "Seeds")) +
-  geom_line(aes(y = outros_meanfire, color = "Others")) +
-  labs(title = "Moyenne de Productivité primaire des composantes de la litière selon les régimes de feu",
-       x = "Date",
-       y = "Moyenne de Productivité primaire (MgC_m2)",
-       color = "Composante de la litière") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
   scale_color_manual(values = c("Leaves" = "green", "Twigs" = "brown", "Flower" = "pink", 
                                 "Fruits" = "red", "Seeds" = "black", "Others" = "gray"),
                      name = "Composante de la litière") +
   facet_wrap(~ fire_regime) +
-  theme_minimal()
+  theme_classic()
+
 
 
 

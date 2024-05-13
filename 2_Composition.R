@@ -10,7 +10,9 @@ library(ggplot2)
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R")
 
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
-                             "fruits", "seeds", "outros", "total_MgC_m2")
+                             "fruits", "seeds", "outros", "total")
+names(dados_norm)[8:14] <- c("leaves", "twigs", "flower", 
+                        "fruits", "seeds", "outros", "total_MgC_m2")
 dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
   "control_an", "control_bi", "control_tri"))
 
@@ -27,16 +29,16 @@ MeanFire100 <- dados %>%
             fruits = mean(fruits, na.rm = TRUE),
             seeds = mean(seeds, na.rm = TRUE),
             outros = mean(outros, na.rm = TRUE),
-            total_MgC_m2 = mean(total_MgC_m2, na.rm = TRUE)) %>%
+            total = mean(total, na.rm = TRUE)) %>%
   ungroup()
 
 dados100_fire <- mutate(MeanFire100, 
-                        leaves = leaves / total_MgC_m2 * 100,
-                        twigs = twigs / total_MgC_m2 * 100,
-                        flower = flower / total_MgC_m2 * 100,
-                        fruits = fruits / total_MgC_m2 * 100,
-                        seeds = seeds / total_MgC_m2 * 100,
-                        outros = outros / total_MgC_m2 * 100)
+                        leaves = leaves / total * 100,
+                        twigs = twigs / total * 100,
+                        flower = flower / total * 100,
+                        fruits = fruits / total * 100,
+                        seeds = seeds / total * 100,
+                        outros = outros / total * 100)
 dados100_fire$date <- as.Date(paste(dados100_fire$year, dados100_fire$month, "01", sep = "-"))
 
 ggplot(dados100_fire, aes(x = date)) +
@@ -66,7 +68,7 @@ Mean <- dados %>%
             fruits = mean(fruits, na.rm = TRUE),
             seeds = mean(seeds, na.rm = TRUE),
             outros = mean(outros, na.rm = TRUE),
-            total_MgC_m2 = mean(total_MgC_m2, na.rm = TRUE)) %>%
+            total = mean(total, na.rm = TRUE)) %>%
   ungroup()
 
 # Graphique pour les valeurs moyenne
@@ -107,8 +109,5 @@ ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
                      name = "Composante de la litière") +
   facet_wrap(~ fire_regime) +
   theme_classic()
-
-
-
 
 

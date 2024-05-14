@@ -12,7 +12,7 @@ source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
                              "fruits", "seeds", "outros", "total")
 names(dados_norm)[8:14] <- c("leaves", "twigs", "flower", 
-                        "fruits", "seeds", "outros", "total_MgC_m2")
+                        "fruits", "seeds", "outros", "total")
 dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
   "control_an", "control_bi", "control_tri"))
 

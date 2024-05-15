@@ -5,7 +5,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-#source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
 
 library(lubridate)
@@ -19,8 +19,8 @@ library(ggplot2)
 # Amplitude entre les moyennes des régimes :
 
 ggplot(AmplitudeMean, aes(x = year)) +
-  geom_line(aes(y = Leaves, color = "Leaves")) +
-  geom_line(aes(y = Twigs, color = "Twigs")) +
+  geom_line(aes(y = leaves, color = "Leaves")) +
+  geom_line(aes(y = twigs, color = "Twigs")) +
   labs(title = "Amplitude pour les feuilles et brindilles",
        x = "Date",
        y = "Amplitude de Productivité primaire (MgC_m2)",
@@ -29,7 +29,7 @@ ggplot(AmplitudeMean, aes(x = year)) +
                      name = "Composante de la litière") +
   facet_wrap(~ fire_regime) +   theme_classic()
 
-ggplot(AmplitudeMean, aes(x = year, y = Leaves, color = fire_regime, linetype = fire_regime)) +
+ggplot(AmplitudeMean, aes(x = year, y = leaves, color = fire_regime, linetype = fire_regime)) +
   geom_smooth(method = "lm", se = FALSE, aes(group = fire_regime)) + 
   labs(title = "Droite de régression pour les feuilles",
        x = "Année",
@@ -39,7 +39,7 @@ ggplot(AmplitudeMean, aes(x = year, y = Leaves, color = fire_regime, linetype = 
   scale_linetype_manual(values = linetype) +
   theme_classic()
 
-ggplot(AmplitudeFire, aes(x = year, y = Amplitude_twigs,  color = fire_regime, linetype = fire_regime)) +
+ggplot(AmplitudeMean, aes(x = year, y = twigs,  color = fire_regime, linetype = fire_regime)) +
   geom_smooth(method = "lm", se = FALSE, aes(group = fire_regime)) + 
   labs(title = "Droite de régression pour les brindilles",
        x = "Année",
@@ -51,9 +51,6 @@ ggplot(AmplitudeFire, aes(x = year, y = Amplitude_twigs,  color = fire_regime, l
   theme_classic()
 
 ### Différence de jour entre les pics de chaque année #####
-
-# Convertir la variable date en format de date
-dados$date <- as.Date(dados$date)
 
 # Groupement par année et recherche des dates des pics de "leaves" et "twigs"
 peaks <- dados %>%
@@ -82,7 +79,7 @@ ggplot(peaks, aes(x = year, y = days_between_leaves,  color = fire_regime, linet
   labs(title = "Droite de régression pour les feuilles",
        x = "Année",
        y = "Nombre de jours entre les pics",
-       color = "Fire Regime") +
+       color = "Fire Regime", linetype = "Fire Regime") +
   scale_color_manual(values = color) +  
   scale_linetype_manual(values = linetype) +
   theme_classic()

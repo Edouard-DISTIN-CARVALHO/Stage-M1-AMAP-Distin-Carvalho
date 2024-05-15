@@ -4,6 +4,7 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+library(lubridate)
 library(tidyr)
 library(ggplot2)
 
@@ -15,6 +16,9 @@ names(dados_norm)[8:14] <- c("leaves", "twigs", "flower",
                         "fruits", "seeds", "outros", "total")
 dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
   "control_an", "control_bi", "control_tri"))
+
+dados_norm$fire_regime <- factor(dados_norm$fire_regime, levels = c("annual", "biennial", "triennial", 
+                                                          "control_an", "control_bi", "control_tri"))
 
 
 ##### Pourcentage au fil du temps et des régimes de feu #### 
@@ -87,13 +91,14 @@ ggplot(CompoMean, aes(x = date, y = Productivite, color = Composant)) +
 # Calculer la différence entre les valeurs extrèmes pour chaque regime de feu
 Mean <- Mean %>%  mutate(year = year(date))
 AmplitudeMean <- Mean %>%
-  group_by(year = as.Date(year), fire_regime) %>%
-  summarise(Leaves = max(leaves) - min(leaves),
-            Twigs = max(twigs) - min(twigs),
-            Flower = max(flower) - min(flower),
-            Fruits = max(fruits) - min(fruits),
-            Seeds = max(seeds) - min(seeds),
-            Outros = max(outros) - min(outros))
+  group_by(year, fire_regime) %>%
+  summarise(leaves = max(leaves) - min(leaves),
+            twigs = max(twigs) - min(twigs),
+            flower = max(flower) - min(flower),
+            fruits = max(fruits) - min(fruits),
+            seeds = max(seeds) - min(seeds),
+            outros = max(outros) - min(outros),
+            total = max(total) - min(total))
 
 CompoAmpMean <- pivot_longer(AmplitudeMean, cols = 3:8, names_to = "Composant",
                              values_to = "AmplitudeMean")
@@ -104,8 +109,8 @@ ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
        y = "Amplitude Moyen de Productivité primaire (MgC_m2)",
        color = "Composant de la litière") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
-  scale_color_manual(values = c("Leaves" = "green", "Twigs" = "brown", "Flower" = "pink", 
-                                "Fruits" = "red", "Seeds" = "black", "Others" = "gray"),
+  scale_color_manual(values = c("leaves" = "green", "twigs" = "brown", "flower" = "pink", 
+                                "fruits" = "red", "seeds" = "black", "others" = "gray"),
                      name = "Composante de la litière") +
   facet_wrap(~ fire_regime) +
   theme_classic()

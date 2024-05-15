@@ -10,10 +10,11 @@ getwd()
 setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Dados") # AMAP
 #setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP") #GalaxyBook
 
+library(dplyr)
+library(ggplot2)
 
 dados_basal <- read.csv("ESA_basal_area.csv", header = TRUE, sep = ",", dec =".")
 
-library(dplyr)
 dados_basal$basal_area <- as.numeric(dados_basal$basal_area)
 dados_basal <- mutate(dados_basal, basal_area = ifelse(is.na(basal_area), 0, basal_area))
 
@@ -55,7 +56,6 @@ linetype <- c("control_bi" = "solid", "biennial" = "dashed",
               "control_tri" = "solid", "triennial" = "dashed",
               "control_an" = "solid", "annual" = "dashed")
 
-library(ggplot2)
 dados_basal_tot  <- dados_basal_tot  %>%  mutate(fire_regime = plot_code)
 names(dados_basal_tot )[names(dados_basal_tot ) == "dados_basal_tot$fire_regime"] <- "fire_regime"
 dados_basal_tot$fire_regime <- factor(dados_basal_tot$fire_regime, 
@@ -79,7 +79,10 @@ ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, color = fire_regime,
 
 #### Application au donnée de productivité primaire ####
 dados_brutos <- read.csv("ESA_litterfall_NPP.csv", header = TRUE, sep = ",", dec =".") 
+
+# suppression erreur donnée
 dados <- dados_brutos[-5840, ]
+
 # Suppresion des NA et donnés 2024
 dados <- na.omit(dados)
 dados <- dados[dados$year != 2024, ]

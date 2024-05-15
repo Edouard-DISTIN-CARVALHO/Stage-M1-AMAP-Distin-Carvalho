@@ -5,11 +5,9 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git")
-#source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_Saisonalite.R") 
-
-# Library : 
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_ Saisonalite.R")
 
 library(dplyr)
 library(ggplot2)
@@ -223,12 +221,12 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0001,
                           c = 110,
-                          Base=2,
-                          p=2.5),col="red", lty="dashed")
+                          Base=1.5,
+                          p=1.8),col="red", lty="dashed")
 
 NLS_tot_ct_an<-nls(data=dados_ct_an, formula = 
                      total~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                   start=c(a = 365, b = .0001, c = 110, Base=2, p=2.5), control=list(maxiter=5000))
+                   start=c(a = 365, b = .0001, c = 110, Base=1.5, p=1.8), control=list(maxiter=5000))
 predNLS_tot_ct_an<-predict(NLS_tot_ct_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_an,col="cyan")
 
@@ -236,15 +234,15 @@ lines(x=ListDate,y=predNLS_tot_ct_an,col="cyan")
 with(data=dados_ct_an,plot(x=date,y=leaves,main = "control_an Leaves"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
-                          b = .001,
-                          c = 120,
+                          b = .0001,
+                          c = 100,
                           Base=2,
-                          p=2.5),col="darkgreen", lty="dashed")
+                          p=2),col="darkgreen", lty="dashed")
 
 dados_ct_an$day<-as.numeric(dados_ct_an$date-min(dados_ct_an$date,na.rm=TRUE))
 NLS_lea_ct_an<-nls(data=dados_ct_an, formula = 
                      leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                   start=c(a = 365, b = .0006, c = 120, Base=2, p=2.5), control=list(maxiter=5000))
+                   start=c(a = 365, b = .0001, c = 100, Base=2, p=2), control=list(maxiter=5000))
 predNLS_lea_ct_an<-predict(NLS_lea_ct_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_an,col="#FF007F")
 
@@ -271,7 +269,7 @@ dados_ct_bi <- Mean[Mean$fire_regime == "control_bi",]
 with(data=dados_ct_bi,plot(x=date,y=total,main = "control_bi Total_litterfall"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 370, 
-                          b = .0006,
+                          b = .0001,
                           c = 100,
                           Base=.5,
                           p=4),
@@ -280,7 +278,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_tot_ct_bi<-nls(data=dados_ct_bi, formula = 
                      total~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                   start=c(a = 370, b = .0006, c = 100, Base=5, p=4), control=list(maxiter=5000))
+                   start=c(a = 370, b = .0001, c = 100, Base=5, p=4), control=list(maxiter=5000))
 predNLS_tot_ct_bi<-predict(NLS_tot_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_bi,col="cyan")
 
@@ -288,7 +286,7 @@ lines(x=ListDate,y=predNLS_tot_ct_bi,col="cyan")
 with(data=dados_ct_bi,plot(x=date,y=leaves,main = "control_bi Leaves"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
-                          b = .0008,
+                          b = .0001,
                           c = 100,
                           Base=.5,
                           p=4),col="darkgreen", lty="dashed")
@@ -296,7 +294,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_lea_ct_bi<-nls(data=dados_ct_bi, formula = 
                      leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                   start=c(a = 365, b = .0008, c = 100, Base=5, p=4), control=list(maxiter=5000))
+                   start=c(a = 365, b = .0001, c = 100, Base=5, p=4), control=list(maxiter=5000))
 predNLS_lea_ct_bi<-predict(NLS_lea_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_bi,col="#FF007F")
 
@@ -307,12 +305,12 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           b = .0001,
                           c = 100,
                           Base=.1,
-                          p=2),col="brown", lty ="dashed")
+                          p=2.5),col="brown", lty ="dashed")
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_twg_ct_bi<-nls(data=dados_ct_bi, formula = 
                      twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                   start=c(a = 400, b = .0001, c = 100, Base=1, p=2), control=list(maxiter=5000))
+                   start=c(a = 400, b = .0001, c = 100, Base=1, p=2.5), control=list(maxiter=5000))
 predNLS_twg_ct_bi<-predict(NLS_twg_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_twg_ct_bi,col="cyan")
 
@@ -325,15 +323,15 @@ with(data=dados_ct_tri,plot(x=date,y=total,main = "control_tri Total_litterfall"
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 380, 
                           b = .0003,
-                          c = 90,
-                          Base=.5,
-                          p=3.6),
+                          c = 70,
+                          Base=1,
+                          p=2.5),
       col="red", lty="dashed")
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_tot_ct_tri<-nls(data=dados_ct_tri, formula = 
                       total~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                    start=c(a = 380, b = .0003, c = 90, Base=3.2, p=3.6), control=list(maxiter=5000))
+                    start=c(a = 380, b = .0003, c = 70, Base=1, p=2.5), control=list(maxiter=5000))
 predNLS_tot_ct_tri<-predict(NLS_tot_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_tri,col="cyan")
 
@@ -341,15 +339,15 @@ lines(x=ListDate,y=predNLS_tot_ct_tri,col="cyan")
 with(data=dados_ct_tri,plot(x=date,y=leaves,main = "control_tri Leaves"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
-                          b = .0004,
+                          b = .0001,
                           c = 100,
-                          Base=.2,
-                          p=4),col="darkgreen", lty="dashed")
+                          Base=.6,
+                          p=3),col="darkgreen", lty="dashed")
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_lea_ct_tri<-nls(data=dados_ct_tri, formula = 
                       leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                    start=c(a = 365, b = .0004, c = 100, Base=2, p=4), control=list(maxiter=5000))
+                    start=c(a = 365, b = .0001, c = 100, Base=.6, p=3), control=list(maxiter=5000))
 predNLS_lea_ct_tri<-predict(NLS_lea_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_tri,col="#FF007F")
 
@@ -365,7 +363,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_twg_ct_tri<-nls(data=dados_ct_tri, formula = 
                       twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p),
-                    start=c(a = 400, b = .0001, c = 70, Base=0.5, p=3), control=list(maxiter=5000))
+                    start=c(a = 400, b = .0001, c = 70, Base=0.05, p=3), control=list(maxiter=5000))
 predNLS_twg_ct_tri<-predict(NLS_twg_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_twg_ct_tri,col="cyan")
 

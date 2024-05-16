@@ -4,7 +4,7 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-getwd()
+
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
 
 library(lubridate)

@@ -64,7 +64,7 @@ ggplot(dados100_fire, aes(x = date)) +
 ##### Moyenne au fil du temps #####
 
 # Extraire les moyennes pour chaque date de collecte et chaque régime de feu
-Mean <- dados %>%
+Mean <- dados_norm %>%
   group_by(date = as.Date(date), fire_regime) %>%
   summarise(leaves = mean(leaves, na.rm = TRUE),
             twigs = mean(twigs, na.rm = TRUE),

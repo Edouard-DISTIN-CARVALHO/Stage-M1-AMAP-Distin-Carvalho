@@ -12,6 +12,18 @@ source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/4_ Modelisation.R"
 
 ##### Paramètre des modèles #### 
 
+# Regime de feu : 
+dados_comp <- Mean %>%
+  filter(fire_regime %in% c("annual","biennial","triennial"))
+with(data=dados_comp, plot(x=date, y = total, main = "Fire regime Total Litterfall", col =c("annual" = "red","biennial"="green","triennial"="blue"), pch = c("annual"=1,"biennial"=2,"triennial"=3), cex = 0.5))
+lines(x=ListDate,y=predNLS_tot_an,col = "red", lwd=1, lty = 2)
+lines(x=ListDate,y=predNLS_tot_bi,col = "green", lwd=1, lty = 1)
+lines(x=ListDate,y=predNLS_tot_tri,col = "blue", lwd=1, lty = 4)
+legend("topright", legend = c("Annual", "Biennial", "Triennial",
+                              "Annual Prediction", "Biennial Prediction","Triennial Prediction"),
+       pch = c(1, 2, 3, NA , NA, NA), col = c("red", "green", "blue", "red", "green", "blue"),
+       lty = c(NA , NA, NA, 2, 1, 4), title = "Fire Regime",cex = 0.5)
+
 # Total Litterfall:
 
 #Extraction des coefficients

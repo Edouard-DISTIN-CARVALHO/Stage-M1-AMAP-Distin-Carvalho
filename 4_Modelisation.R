@@ -4,8 +4,10 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git")
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_ Saisonalite.R")
+getwd()
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+source("3_ Saisonalite.R")
 
 library(dplyr)
 library(ggplot2)

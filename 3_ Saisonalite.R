@@ -4,8 +4,10 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
+getwd()
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+source("2_Composition.R") 
 
 library(lubridate)
 library(dplyr)

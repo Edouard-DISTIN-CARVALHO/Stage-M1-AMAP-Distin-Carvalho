@@ -8,7 +8,10 @@ library(lubridate)
 library(tidyr)
 library(ggplot2)
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R")
+getwd()
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+source("1_Standardisation.R")
 
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
                              "fruits", "seeds", "outros", "total")

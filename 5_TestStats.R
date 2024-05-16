@@ -13,13 +13,13 @@ source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/4_Modelisation.R")
 dados_comp <- Mean %>%
   filter(fire_regime %in% c("annual","biennial","triennial"))
 with(data=dados_comp, plot(x=date, y = total, main = "Fire regime Total Litterfall", col =c("annual" = "red","biennial"="green","triennial"="blue"), pch = c("annual"=1,"biennial"=2,"triennial"=3), cex = 0.5))
-lines(x=ListDate,y=predNLS_tot_an,col = "red", lwd=1, lty = 2)
+lines(x=ListDate,y=predNLS_tot_an,col = "red", lwd=1, lty = 1)
 lines(x=ListDate,y=predNLS_tot_bi,col = "green", lwd=1, lty = 1)
-lines(x=ListDate,y=predNLS_tot_tri,col = "blue", lwd=1, lty = 4)
+lines(x=ListDate,y=predNLS_tot_tri,col = "blue", lwd=1, lty = 1)
 legend("topright", legend = c("Annual", "Biennial", "Triennial",
                               "Annual Prediction", "Biennial Prediction","Triennial Prediction"),
        pch = c(1, 2, 3, NA , NA, NA), col = c("red", "green", "blue", "red", "green", "blue"),
-       lty = c(NA , NA, NA, 2, 1, 4), title = "Fire Regime",cex = 0.5)
+       lty = c(NA , NA, NA, 1, 1, 1), title = "Fire Regime",cex = 0.5)
 
 # Total Litterfall:
 
@@ -43,7 +43,9 @@ coef_tot_reg <- data.frame(
   Base = c(coef_tot_an["Base"], coef_tot_bi["Base"], coef_tot_tri["Base"],
            coef_tot_ct_an["Base"], coef_tot_ct_bi["Base"], coef_tot_ct_tri["Base"]),
   p = c(coef_tot_an["p"], coef_tot_bi["p"], coef_tot_tri["p"],
-        coef_tot_ct_an["p"], coef_tot_ct_bi["p"], coef_tot_ct_tri["p"]))
+        coef_tot_ct_an["p"], coef_tot_ct_bi["p"], coef_tot_ct_tri["p"]),
+  A = c(coef_tot_an["A"], coef_tot_bi["A"], coef_tot_tri["A"],
+        coef_tot_ct_an["A"], coef_tot_ct_bi["A"], coef_tot_ct_tri["A"]))
 
 # Leaves 
 
@@ -67,7 +69,9 @@ coef_lea_reg <- data.frame(
   Base = c(coef_lea_an["Base"], coef_lea_bi["Base"], coef_lea_tri["Base"],
            coef_lea_ct_an["Base"], coef_lea_ct_bi["Base"], coef_lea_ct_tri["Base"]),
   p = c(coef_lea_an["p"], coef_lea_bi["p"], coef_lea_tri["p"],
-        coef_lea_ct_an["p"], coef_lea_ct_bi["p"], coef_lea_ct_tri["p"]))
+        coef_lea_ct_an["p"], coef_lea_ct_bi["p"], coef_lea_ct_tri["p"]),
+  A = c(coef_lea_an["A"], coef_lea_bi["A"], coef_lea_tri["A"],
+        coef_lea_ct_an["A"], coef_lea_ct_bi["A"], coef_lea_ct_tri["A"]))
 
 
 # Twigs 
@@ -92,6 +96,8 @@ coef_twg_reg <- data.frame(
   Base = c(coef_twg_an["Base"], coef_twg_bi["Base"], coef_twg_tri["Base"],
            coef_twg_ct_an["Base"], coef_twg_ct_bi["Base"], coef_twg_ct_tri["Base"]),
   p = c(coef_twg_an["p"], coef_twg_bi["p"], coef_twg_tri["p"],
-        coef_twg_ct_an["p"], coef_twg_ct_bi["p"], coef_twg_ct_tri["p"]))
+        coef_twg_ct_an["p"], coef_twg_ct_bi["p"], coef_twg_ct_tri["p"]),
+  A = c(coef_twg_an["A"], coef_twg_bi["A"], coef_twg_tri["A"],
+        coef_twg_ct_an["A"], coef_twg_ct_bi["A"], coef_twg_ct_tri["A"]))
 
 

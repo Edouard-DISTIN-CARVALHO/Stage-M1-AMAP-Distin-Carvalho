@@ -5,9 +5,6 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git")
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R") 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R") 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_Saisonalite.R")
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/4_Modelisation.R")
 
 ##### Paramètre des modèles #### 

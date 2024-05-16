@@ -162,7 +162,8 @@ NLS_lea_bi<-nls(data=dados_bi, formula =
                         b = .0005,
                         c = 100,
                         Base=.3,
-                        p=3, A = 1), control=list(maxiter=5000))
+                        p=3, A = 1), 
+                control = nls.control(minFactor = 1e-10, maxiter = 5000))
 predNLS_lea_bi<-predict(NLS_lea_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_bi,col="#FF007F")
 
@@ -182,7 +183,8 @@ NLS_twg_bi<-nls(data=dados_bi, formula =
                         b = .0001,
                         c = 120,
                         Base=.05,
-                        p=3, A = 0.1), control=list(maxiter=5000))
+                        p=3, A = 0.1), 
+                control = nls.control(minFactor = 1e-10, maxiter = 10000))
 predNLS_twg_bi<-predict(NLS_twg_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_twg_bi,col="cyan")
 

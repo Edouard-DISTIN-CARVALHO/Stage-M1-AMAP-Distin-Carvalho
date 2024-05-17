@@ -9,8 +9,8 @@ library(tidyr)
 library(ggplot2)
 
 getwd()
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("1_Standardisation.R")
 
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
@@ -110,8 +110,7 @@ ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
   labs(title = "Amplitude Moyenne de Productivité primaire des composantes des litières",
        x = "Date de collecte",
        y = "Amplitude Moyen de Productivité primaire (MgC_m2)",
-       color = "Composant de la litière") +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") + 
+       color = "Composant de la litière") + 
   scale_color_manual(values = c("leaves" = "green", "twigs" = "brown", "flower" = "pink", 
                                 "fruits" = "red", "seeds" = "black", "others" = "gray"),
                      name = "Composante de la litière") +

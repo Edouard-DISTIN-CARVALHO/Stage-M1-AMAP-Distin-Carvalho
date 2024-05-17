@@ -5,8 +5,8 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 getwd()
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("4_Modelisation.R")
 
 ##### Paramètre des modèles #### 

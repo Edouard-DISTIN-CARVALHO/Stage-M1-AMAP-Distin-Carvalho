@@ -5,14 +5,12 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 getwd()
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("2_Composition.R") 
 
 library(lubridate)
 library(dplyr)
-library(ade4)
-library(lme4)
 library(ggplot2)
 
 ### Différence d'amplitude moyenne entre les pics de chaque année pour chaque régime #####

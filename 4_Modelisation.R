@@ -5,8 +5,8 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 getwd()
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("3_ Saisonalite.R")
 
 library(dplyr)
@@ -187,11 +187,11 @@ lines(x=ListDate,y=predNLS_lea_bi,col="#FF007F")
 with(data=dados_bi,plot(x=date,y=twigs,main = "Biennial twigs"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
-                          b = 0.0005,  
-                          c = 100,     
-                          Base = 0.01,  
-                          p = 3,       
-                          A = 0.05),
+                          b = 0.00001,  
+                          c = 120,     
+                          Base = 0.03,  
+                          p = 2,       
+                          A = 0.1),
                           col="brown", 
                           lty ="dashed")
 
@@ -199,13 +199,14 @@ dados_bi$day<-as.numeric(dados_bi$date-min(dados_bi$date,na.rm=TRUE))
 NLS_twg_bi <- nls(data = dados_bi, 
                   formula = twigs ~ myFunc(x = day, a = a, b = b, c = c, Base = Base, p = p, A = A),
                   start = c(a = 365, 
-                            b = 0.0005,  
-                            c = 100,     
-                            Base = 0.01,  
-                            p = 3,       
-                            A = 0.05),   
-                  control = nls.control(maxiter = 5000, tol = 1e-5, minFactor = 1e-10),
-                  algorithm = "port")
+                            b = 0.00001,  
+                            c = 120,     
+                            Base = 0.03,  
+                            p = 2,       
+                            A = 0.1),   
+                  control = nls.control(maxiter = 10000, 
+                                        tol = 1e-4, 
+                                        minFactor = 1e-5))
 predNLS_twg_bi<-predict(NLS_twg_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_twg_bi,col="cyan")
 
@@ -241,7 +242,7 @@ with(data=dados_tri,plot(x=date,y=leaves,main = "Triennial Leaves"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .001,
-                          c = 100,
+                          c = 120,
                           Base=.1,
                           p=3,
                           A = .5),col="darkgreen", lty="dashed")
@@ -251,7 +252,7 @@ NLS_lea_tri<-nls(data=dados_tri, formula =
                    leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                  start=c(a = 365, 
                          b = .001,
-                         c = 100,
+                         c = 120,
                          Base=.1,
                          p=3,
                          A = .5), control=list(maxiter=5000))
@@ -263,7 +264,7 @@ with(data=dados_tri,plot(x=date,y=twigs,main = "Triennial twigs"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0001,
-                          c = 100,
+                          c = 120,
                           Base=0.01,
                           p=5, 
                           A = 0.01),col="brown", lty ="dashed")
@@ -273,7 +274,7 @@ NLS_twg_tri<-nls(data=dados_tri, formula =
                    twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                  start=c(a = 365, 
                          b = .0001,
-                         c = 100,
+                         c = 120,
                          Base=0.01,
                          p=5, 
                          A = 0.01), control=list(maxiter=5000))
@@ -333,7 +334,7 @@ with(data=dados_ct_an,plot(x=date,y=twigs,main = "control_an twigs"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
-                          c = 100,
+                          c = 120,
                           Base=0.01,
                           p=3, 
                           A = .03),col="brown", lty="dashed")
@@ -343,7 +344,7 @@ NLS_twg_ct_an<-nls(data=dados_ct_an, formula =
                      twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
                            b = 0,
-                           c = 100,
+                           c = 120,
                            Base=0.01,
                            p=3, 
                            A = .03), control=list(maxiter=5000))
@@ -358,19 +359,21 @@ with(data=dados_ct_bi,plot(x=date,y=total,main = "control_bi Total_litterfall"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
-                          c = 100,
-                          Base=.5,
-                          p=3, A= 1),
+                          c = 120,
+                          Base=.1,
+                          p=3.4, 
+                          A= .15),
       col="green", lty="dashed")
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_tot_ct_bi<-nls(data=dados_ct_bi, formula = 
                      total~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
-                           b = 0,
-                           c = 100,
-                           Base=.5,
-                           p=3, A= 1), control=list(maxiter=5000))
+                          b = 0,
+                          c = 120,
+                          Base=.1,
+                          p=3.4, 
+                          A= .15), control=list(maxiter=5000))
 predNLS_tot_ct_bi<-predict(NLS_tot_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_bi,col="cyan")
 
@@ -379,18 +382,20 @@ with(data=dados_ct_bi,plot(x=date,y=leaves,main = "control_bi Leaves"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
-                          c = 100,
-                          Base=.5,
-                          p=3, A = 1),col="darkgreen", lty="dashed")
+                          c = 120,
+                          Base=.1,
+                          p=3, 
+                          A = .15),col="darkgreen", lty="dashed")
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_lea_ct_bi<-nls(data=dados_ct_bi, formula = 
                      leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
                            b = 0,
-                           c = 100,
-                           Base=.5,
-                           p=3, A = 1), control=list(maxiter=5000))
+                           c = 120,
+                           Base=.1,
+                           p=3, 
+                           A = .15), control=list(maxiter=5000))
 predNLS_lea_ct_bi<-predict(NLS_lea_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_bi,col="#FF007F")
 
@@ -398,19 +403,22 @@ lines(x=ListDate,y=predNLS_lea_ct_bi,col="#FF007F")
 with(data=dados_ct_bi,plot(x=date,y=twigs,main = "control_bi twigs"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
-                          b = 0,
-                          c = 100,
-                          Base=.1,
-                          p=2, A = .1),col="brown", lty ="dashed")
+                          b = 0.0001,
+                          c = 120,
+                          Base=.005,
+                          p=5, 
+                          A = .01),col="brown", lty ="dashed")
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_twg_ct_bi<-nls(data=dados_ct_bi, formula = 
                      twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
-                           b = 0,
-                           c = 100,
-                           Base=.1,
-                           p=2, A = .1), control=list(maxiter=5000))
+                           b = 0.0001,
+                           c = 120,
+                           Base=.005,
+                           p=5, 
+                           A = .01), control = nls.control(maxiter = 5000, tol = 1e-5, minFactor = 1e-10),
+                   algorithm = "port")
 predNLS_twg_ct_bi<-predict(NLS_twg_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_twg_ct_bi,col="cyan")
 
@@ -423,9 +431,10 @@ with(data=dados_ct_tri,plot(x=date,y=total,main = "control_tri Total_litterfall"
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
-                          c = 100,
-                          Base=.5,
-                          p=2, A=2),
+                          c = 120,
+                          Base=.1,
+                          p=2, 
+                          A=.3),
       col="red", lty="dashed")
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
@@ -433,9 +442,10 @@ NLS_tot_ct_tri<-nls(data=dados_ct_tri, formula =
                       total~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                     start=c(a = 365, 
                             b = 0,
-                            c = 100,
-                            Base=.5,
-                            p=2, A=2), control=list(maxiter=5000))
+                            c = 120,
+                            Base=.1,
+                            p=2, 
+                            A=.3), control=list(maxiter=5000))
 predNLS_tot_ct_tri<-predict(NLS_tot_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_tri,col="cyan")
 
@@ -444,38 +454,42 @@ with(data=dados_ct_tri,plot(x=date,y=leaves,main = "control_tri Leaves"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
-                          c = 100,
-                          Base=.4,
-                          p=3, A = .7),col="darkgreen", lty="dashed")
+                          c = 120,
+                          Base=.05,
+                          p=3, 
+                          A = .15),col="darkgreen", lty="dashed")
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_lea_ct_tri<-nls(data=dados_ct_tri, formula = 
                       leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                     start=c( a = 365, 
                              b = 0,
-                             c = 100,
-                             Base=.4,
-                             p=3, A = .7), control=list(maxiter=5000))
+                             c = 120,
+                             Base=.05,
+                             p=3, 
+                             A = .15), control=list(maxiter=5000))
 predNLS_lea_ct_tri<-predict(NLS_lea_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_tri,col="#FF007F")
 
 # Twigs 
 with(data=dados_ct_tri,plot(x=date,y=twigs,main = "control_tri twigs"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
-                          a = 400, 
+                          a = 365, 
                           b = 0,
-                          c = 100,
+                          c = 120,
                           Base=0.01,
-                          p=2, A = 0.1),col="brown", lty ="dashed")
+                          p=2, 
+                          A = 0.05),col="brown", lty ="dashed")
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_twg_ct_tri<-nls(data=dados_ct_tri, formula = 
                       twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
-                    start=c(a = 400, 
+                    start=c(a = 365, 
                             b = 0,
-                            c = 100,
+                            c = 120,
                             Base=0.01,
-                            p=2, A = 0.1), control=list(maxiter=5000))
+                            p=2, 
+                            A = 0.05), control=list(maxiter=5000))
 predNLS_twg_ct_tri<-predict(NLS_twg_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_twg_ct_tri,col="cyan")
 
@@ -628,3 +642,4 @@ legend("topright", legend = c("Triennial", "Control_tri", "Triennial Prediction"
        pch = c(10, 0, NA, NA), col = c("blue", "black", "blue", "black"),
        lty = c(NA, NA, 1, 2), title = "Fire Regime",
        cex = 0.6)
+

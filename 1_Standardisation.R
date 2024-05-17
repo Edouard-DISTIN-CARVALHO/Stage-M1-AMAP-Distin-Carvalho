@@ -7,8 +7,8 @@
 
 
 getwd()
-#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Dados") # AMAP
-setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Dados") #GalaxyBook
+setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Dados") # AMAP
+#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Dados") #GalaxyBook
 
 library(dplyr)
 library(ggplot2)

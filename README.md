@@ -33,4 +33,4 @@ source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_Saisonalite.R")
 
 ## Etape 4 : Modélisation 
 
-source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/4_Modelisation.R") 
+source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/4_Modelisation.R")

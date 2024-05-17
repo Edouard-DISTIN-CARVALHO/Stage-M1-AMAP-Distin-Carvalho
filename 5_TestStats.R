@@ -1,12 +1,12 @@
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
 #                          5/ Test Statistiques                                 ----
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 getwd()
-#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("4_Modelisation.R")
 
 ##### Paramètre des modèles #### 
@@ -34,7 +34,7 @@ coef_tot_ct_bi <- coef(NLS_tot_ct_bi)
 coef_tot_ct_tri <- coef(NLS_tot_ct_tri)
 
 # Création d'un nouveau dataframe
-coef_tot_reg <- data.frame(
+coef_tot <- data.frame(
   Modele = c("NLS_tot_an", "NLS_tot_bi", "NLS_tot_tri",
             "NLS_tot_ct_an", "NLS_tot_ct_bi", "NLS_tot_ct_tri"),
   a = c(coef_tot_an["a"], coef_tot_bi["a"], coef_tot_tri["a"],
@@ -60,7 +60,7 @@ coef_lea_ct_bi <- coef(NLS_lea_ct_bi)
 coef_lea_ct_tri <- coef(NLS_lea_ct_tri)
 
 # Création d'un nouveau dataframe
-coef_lea_reg <- data.frame(
+coef_lea <- data.frame(
   Modele = c("NLS_lea_an", "NLS_lea_bi", "NLS_lea_tri",
              "NLS_lea_ct_an", "NLS_lea_ct_bi", "NLS_lea_ct_tri"),
   a = c(coef_lea_an["a"], coef_lea_bi["a"], coef_lea_tri["a"],
@@ -87,7 +87,7 @@ coef_twg_ct_bi <- coef(NLS_twg_ct_bi)
 coef_twg_ct_tri <- coef(NLS_twg_ct_tri)
 
 # Création d'un nouveau dataframe
-coef_twg_reg <- data.frame(
+coef_twg <- data.frame(
   Modele = c("NLS_twg_an", "NLS_twg_bi", "NLS_twg_tri",
              "NLS_twg_ct_an", "NLS_twg_ct_bi", "NLS_twg_ct_tri"),
   a = c(coef_twg_an["a"], coef_twg_bi["a"], coef_twg_tri["a"],
@@ -102,4 +102,6 @@ coef_twg_reg <- data.frame(
   A = c(coef_twg_an["A"], coef_twg_bi["A"], coef_twg_tri["A"],
         coef_twg_ct_an["A"], coef_twg_ct_bi["A"], coef_twg_ct_tri["A"]))
 
-
+coef_tot
+coef_lea
+coef_twg

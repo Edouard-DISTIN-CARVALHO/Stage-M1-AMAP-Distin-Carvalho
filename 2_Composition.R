@@ -9,8 +9,8 @@ library(tidyr)
 library(ggplot2)
 
 getwd()
-#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("1_Standardisation.R")
 
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
@@ -67,7 +67,7 @@ ggplot(dados100_fire, aes(x = date)) +
 ##### Moyenne au fil du temps #####
 
 # Extraire les moyennes pour chaque date de collecte et chaque régime de feu
-Mean <- dados_norm %>%
+Mean <- dados_norm%>%
   group_by(date = as.Date(date), fire_regime) %>%
   summarise(leaves = mean(leaves, na.rm = TRUE),
             twigs = mean(twigs, na.rm = TRUE),

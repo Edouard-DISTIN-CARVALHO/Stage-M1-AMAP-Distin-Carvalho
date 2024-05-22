@@ -52,7 +52,7 @@ ggplot(AmplitudeMean, aes(x = year, y = twigs,  color = fire_regime, linetype = 
 ### Différence de jour entre les pics de chaque année #####
 
 # Groupement par année et recherche des dates des pics de "leaves" et "twigs"
-peaks <- dados_norm %>%
+peaks <- dados %>%
   group_by(fire_regime, year = lubridate::year(date)) %>%
   summarise(date_max_leaves = date[which.max(leaves)],
             date_max_twigs = date[which.max(twigs)])

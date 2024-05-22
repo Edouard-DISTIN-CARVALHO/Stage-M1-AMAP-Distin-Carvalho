@@ -15,12 +15,12 @@ source("1_Standardisation.R")
 
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
                              "fruits", "seeds", "outros", "total")
-names(dados_norm)[8:14] <- c("leaves", "twigs", "flower", 
+names(dados)[8:14] <- c("leaves", "twigs", "flower", 
                         "fruits", "seeds", "outros", "total")
 dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
   "control_an", "control_bi", "control_tri"))
 
-dados_norm$fire_regime <- factor(dados_norm$fire_regime, levels = c("annual", "biennial", "triennial", 
+dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
                                                           "control_an", "control_bi", "control_tri"))
 
 
@@ -67,7 +67,7 @@ ggplot(dados100_fire, aes(x = date)) +
 ##### Moyenne au fil du temps #####
 
 # Extraire les moyennes pour chaque date de collecte et chaque régime de feu
-Mean <- dados_norm%>%
+Mean <- dados%>%
   group_by(date = as.Date(date), fire_regime) %>%
   summarise(leaves = mean(leaves, na.rm = TRUE),
             twigs = mean(twigs, na.rm = TRUE),

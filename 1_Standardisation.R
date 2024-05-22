@@ -1,4 +1,3 @@
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #           1/ Standardisation de la productivité par l'aire basale             ----
@@ -44,7 +43,7 @@ dados_basal_2  <- dados_basal_2  %>%  mutate(fire_regime = plot_code)
 names(dados_basal_2 )[names(dados_basal_2 ) == "dados_basal_2$fire_regime"] <- "fire_regime"
 dados_basal_2$fire_regime <- factor(dados_basal_2$fire_regime, 
                                     levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
-                                    labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+                                    labels = c("control_tri", "biennial", "control_bi", "triennial", "control_an", "annual"))
 
 color <- c("control_bi" = "green", "biennial" = "green",
            "control_tri" = "blue", "triennial" = "blue",
@@ -58,7 +57,8 @@ dados_basal_tot  <- dados_basal_tot  %>%  mutate(fire_regime = plot_code)
 names(dados_basal_tot )[names(dados_basal_tot ) == "dados_basal_tot$fire_regime"] <- "fire_regime"
 dados_basal_tot$fire_regime <- factor(dados_basal_tot$fire_regime, 
                                       levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
-                                      labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+                                      labels = c("control_tri", "biennial", "control_bi", "triennial", "control_an", "annual"))
+
 
 ggplot(dados_basal_tot, aes(x = year, y = somme_basal_area, color = fire_regime, 
                           linetype = fire_regime)) +  geom_point() +  geom_line() +   
@@ -97,7 +97,7 @@ dados <- dados %>%  mutate(fire_regime = plot_code)
 names(dados)[names(dados) == "dados$fire_regime"] <- "fire_regime"
 dados$fire_regime <- factor(dados$fire_regime,
                             levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
-                            labels = c("control_bi", "biennial", "control_tri", "triennial", "control_an", "annual"))
+                            labels = c("control_tri", "biennial", "control_bi", "triennial", "control_an", "annual"))
 
 # Boucle de Normalisation : NPP/Aire Basale pour chaque parcelle de chaque année
 dados_norm <- dados

@@ -15,8 +15,6 @@ source("1_Standardisation.R")
 
 names(dados)[8:14] <- c("leaves", "twigs", "flower", 
                              "fruits", "seeds", "outros", "total")
-names(dados)[8:14] <- c("leaves", "twigs", "flower", 
-                        "fruits", "seeds", "outros", "total")
 dados$fire_regime <- factor(dados$fire_regime, levels = c("annual", "biennial", "triennial", 
   "control_an", "control_bi", "control_tri"))
 
@@ -116,5 +114,7 @@ ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
                      name = "Composante de la litière") +
   facet_wrap(~ fire_regime) +
   theme_classic()
+
+
 
 

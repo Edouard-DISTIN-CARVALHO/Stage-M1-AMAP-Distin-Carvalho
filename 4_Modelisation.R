@@ -347,8 +347,8 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           b = 0,
                           c = 100,
                           Base=.5,
-                          p=3, 
-                          A= 1),
+                          p=2, 
+                          A=2),
       col="green", lty="dashed")
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
@@ -358,8 +358,8 @@ NLS_tot_ct_bi<-nls(data=dados_ct_bi, formula =
                            b = 0,
                            c = 100,
                            Base=.5,
-                           p=3, 
-                           A= 1), control=list(maxiter=5000))
+                           p=2, 
+                           A=2), control=list(maxiter=5000))
 predNLS_tot_ct_bi<-predict(NLS_tot_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_bi,col="cyan")
 
@@ -418,19 +418,19 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           b = 0,
                           c = 100,
                           Base=.5,
-                          p=2, 
-                          A=2),
+                          p=3, 
+                          A= 1),
       col="red", lty="dashed")
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_tot_ct_tri<-nls(data=dados_ct_tri, formula = 
                       total~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
-                    start=c(a = 365, 
-                            b = 0,
-                            c = 100,
-                            Base=.5,
-                            p=2, 
-                            A=2), control=list(maxiter=5000))
+                    start=c( a = 365, 
+                             b = 0,
+                             c = 100,
+                             Base=.5,
+                             p=3, 
+                             A= 1), control=list(maxiter=5000))
 predNLS_tot_ct_tri<-predict(NLS_tot_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_tri,col="cyan")
 
@@ -481,7 +481,9 @@ lines(x=ListDate,y=predNLS_twg_ct_tri,col="cyan")
 ###### Control #####
 dados_ct_comp <- Mean %>%
   filter(fire_regime %in% c("control_an","control_bi","control_tri"))
-with(data=dados_ct_comp, plot(x=date, y = total, main = "Fire regime Control Total Litterfall", col =c("control_an" = "red","control_bi"="green","control_tri"="blue"), pch = c("control_an"=1,"control_bi"=2,"control_tri"=3), cex = 0.5))
+with(data=dados_ct_comp, plot(x=date, y = total, main = "Fire regime Control Total Litterfall", 
+                              col =c("control_an" = "red","control_bi"="green","control_tri"="blue"), 
+                              pch = c("control_an"=1,"control_bi"=2,"control_tri"=3), cex = 0.5))
 lines(x=ListDate,y=predNLS_tot_ct_an,col = "red", lwd=1, lty = 2)
 lines(x=ListDate,y=predNLS_tot_ct_bi,col = "green", lwd=1, lty = 2)
 lines(x=ListDate,y=predNLS_tot_ct_tri,col = "blue", lwd=1, lty = 2)

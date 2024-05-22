@@ -102,6 +102,13 @@ coef_twg <- data.frame(
   A = c(coef_twg_an["A"], coef_twg_bi["A"], coef_twg_tri["A"],
         coef_twg_ct_an["A"], coef_twg_ct_bi["A"], coef_twg_ct_tri["A"]))
 
+# Exportation des coefficients :
+install.packages("openxlsx")
+library(openxlsx)
+write.xlsx(coef_tot, file = "coef_tot.xlsx")
+write.xlsx(coef_lea, file = "coef_tot.xlsx")
+write.xlsx(coef_twg, file = "coef_tot.xlsx")
+
 coef_tot
 coef_lea
 coef_twg

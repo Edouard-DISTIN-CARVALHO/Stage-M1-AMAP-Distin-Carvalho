@@ -33,7 +33,7 @@ ggplot(AmplitudeMean, aes(x = year, y = leaves, color = fire_regime, linetype = 
   labs(title = "Droite de régression pour les feuilles",
        x = "Année",
        y = "Amplitude de Productivité primaire (MgC_m2)",
-       color = "Fire Regime") +  
+       color = "Fire Regime", linetype = "Fire Regime" ) +  
   scale_color_manual(values = color) +  
   scale_linetype_manual(values = linetype) +
   theme_classic()
@@ -43,7 +43,7 @@ ggplot(AmplitudeMean, aes(x = year, y = twigs,  color = fire_regime, linetype = 
   labs(title = "Droite de régression pour les brindilles",
        x = "Année",
        y = "Amplitude de Productivité primaire (MgC_m2)",
-       color = "Fire Regime") +
+       color = "Fire Regime", linetype = "Fire Regime" ) +
     
   scale_color_manual(values = color) +  
   scale_linetype_manual(values = linetype) +
@@ -52,7 +52,7 @@ ggplot(AmplitudeMean, aes(x = year, y = twigs,  color = fire_regime, linetype = 
 ### Différence de jour entre les pics de chaque année #####
 
 # Groupement par année et recherche des dates des pics de "leaves" et "twigs"
-peaks <- dados_norm %>%
+peaks <- dados %>%
   group_by(fire_regime, year = lubridate::year(date)) %>%
   summarise(date_max_leaves = date[which.max(leaves)],
             date_max_twigs = date[which.max(twigs)])

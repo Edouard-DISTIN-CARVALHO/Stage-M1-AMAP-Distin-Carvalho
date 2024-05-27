@@ -92,3 +92,4 @@ ggplot(peaks, aes(x = year, y = days_between_twigs,  color = fire_regime, linety
   scale_color_manual(values = color) +  
   scale_linetype_manual(values = linetype) +
   theme_classic()
+

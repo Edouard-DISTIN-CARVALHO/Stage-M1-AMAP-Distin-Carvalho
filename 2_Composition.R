@@ -116,3 +116,5 @@ ggplot(CompoAmpMean, aes(x = year, y = AmplitudeMean, color = Composant)) +
   theme_classic()
 
 
+
+

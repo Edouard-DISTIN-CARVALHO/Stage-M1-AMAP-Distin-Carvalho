@@ -100,7 +100,7 @@ NLS_lea_an<-nls(data=dados_an, formula =
                         c = 120,
                         Base=.5,
                         p=3, 
-                        A = 0.8), control=list(maxiter=5000))
+                        A = 0.8), control = nls.control(minFactor = 1e-10, maxiter = 5000))
 predNLS_lea_an<-predict(NLS_lea_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_an,col="#FF007F")
 

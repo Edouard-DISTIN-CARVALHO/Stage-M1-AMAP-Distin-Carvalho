@@ -76,7 +76,8 @@ ggplot(dados_basal_2, aes(x = year, y = somme_basal_area,
   geom_point(aes(group = interaction(fire_regime, plot_code))) +
   scale_color_manual(values = color) + 
   scale_linetype_manual(values = linetype) +
-  labs(x = "Années", y = "Aire Basale (m²/an)", color = "Type de parcelle", 
+  labs(title = "Evolution de l'aire basale avec prédiction au cours du temps", 
+       x = "Années", y = "Aire Basale (m²/y)", color = "Type de parcelle", 
        linetype = "Type de parcelle") +  
   theme_classic()
 
@@ -138,9 +139,9 @@ ggplot(dados_norm, aes(x = date, y = total_litterfall_MgC_ha_year, color=fire_re
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") + theme_classic() 
 
 # Données brute 
-ggplot(dados, aes(x = date, y = total_litterfall_MgC_ha_year, color = fire_regime)) +
-  geom_smooth(method = "loess", span = 0.2)  + 
-  labs(title = "Evolution de la productivité primaire totale brute",    
+ggplot(dados, aes(x = date, y = total, color = fire_regime)) +
+  geom_smooth(method = "loess", span = 0.1) +
+  labs(title = "Evolution de la productivité primaire totale",    
        x = "Date de collecte", y = "Productivité primaire totale (MgC_ha_year)",
        color ="Regime de feu") + scale_x_date(date_breaks = "1 year", 
                                                date_labels = "%Y") + theme_classic()

@@ -30,10 +30,10 @@ ListDate<-seq.Date(from=min(Mean$date,na.rm=TRUE),to=max(Mean$date,na.rm=TRUE),b
 with(data=Mean,plot(x=date,y=total, main = "Totall_Litterfall"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
-                          b = .0005,
+                          b = -.0002,
                           c = 120,
                           Base=0.5,
-                          p=3, A = 1.5),col="red")
+                          p=, A = 1.5),col="green")
 
 
 ## Leaves

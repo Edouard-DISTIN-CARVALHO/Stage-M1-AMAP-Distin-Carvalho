@@ -5,8 +5,8 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 getwd()
-#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("3_ Saisonalite.R")
 
 library(dplyr)
@@ -36,8 +36,8 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           p=3, A =1 ),col="red")
 
 
-## Leaves
-with(data=Mean,plot(x=date,y=leaves,main = "Leaves"))
+## feuilles
+with(data=Mean,plot(x=date,y=feuilles,main = "feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0004,
@@ -45,8 +45,8 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           Base=0.5,
                           p=3, A = 1.5),col="darkgreen")
 
-## Twigs 
-with(data=Mean,plot(x=date,y=twigs, main = "Twigs"))
+## branches 
+with(data=Mean,plot(x=date,y=branches, main = "branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0006,
@@ -82,8 +82,8 @@ NLS_tot_an<-nls(data=dados_an, formula =
 predNLS_tot_an<-predict(NLS_tot_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_an,col="cyan")
 
-# Leaves 
-with(data=dados_an,plot(x=date,y=leaves,main = "Annual Leaves"))
+# feuilles 
+with(data=dados_an,plot(x=date,y=feuilles,main = "Annual feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                              a = 365, 
                              b = 0.0001,
@@ -94,7 +94,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_an$day<-as.numeric(dados_an$date-min(dados_an$date,na.rm=TRUE))
 NLS_lea_an<-nls(data=dados_an, formula = 
-                  leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                  feuilles~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                 start=c(a = 365, 
                         b = 0.0001,
                         c = 120,
@@ -104,8 +104,8 @@ NLS_lea_an<-nls(data=dados_an, formula =
 predNLS_lea_an<-predict(NLS_lea_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_an,col="#FF007F")
 
-# Twigs 
-with(data=dados_an,plot(x=date,y=twigs,main = "Annual twigs"))
+# branches 
+with(data=dados_an,plot(x=date,y=branches,main = "Annual branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                              a = 365, 
                              b = .0012,
@@ -116,7 +116,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_an$day<-as.numeric(dados_an$date-min(dados_an$date,na.rm=TRUE))
 NLS_twg_an<-nls(data=dados_an, formula = 
-                  twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                  branches~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                 start=c(a = 365, 
                         b = .0012,
                         c = 140,
@@ -152,8 +152,8 @@ NLS_tot_bi<-nls(data=dados_bi, formula =
 predNLS_tot_bi<-predict(NLS_tot_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_bi,col="cyan")
 
-# Leaves 
-with(data=dados_bi,plot(x=date,y=leaves,main = "Biennial Leaves"))
+# feuilles 
+with(data=dados_bi,plot(x=date,y=feuilles,main = "Biennial feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0005,
@@ -164,7 +164,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_bi$day<-as.numeric(dados_bi$date-min(dados_bi$date,na.rm=TRUE))
 NLS_lea_bi<-nls(data=dados_bi, formula = 
-                  leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                  feuilles~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                 start=c(a = 365, 
                         b = .0005,
                         c = 100,
@@ -175,8 +175,8 @@ NLS_lea_bi<-nls(data=dados_bi, formula =
 predNLS_lea_bi<-predict(NLS_lea_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_bi,col="#FF007F")
 
-# Twigs 
-with(data=dados_bi,plot(x=date,y=twigs,main = "Biennial twigs"))
+# branches 
+with(data=dados_bi,plot(x=date,y=branches,main = "Biennial branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0001,
@@ -187,7 +187,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_bi$day<-as.numeric(dados_bi$date-min(dados_bi$date,na.rm=TRUE))
 NLS_twg_bi<-nls(data=dados_bi, formula = 
-                  twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                  branches~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                 start=c(a = 365, 
                         b = .0001,
                         c = 120,
@@ -225,8 +225,8 @@ NLS_tot_tri<-nls(data=dados_tri, formula =
 predNLS_tot_tri<-predict(NLS_tot_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_tri,col="cyan")
 
-# Leaves 
-with(data=dados_tri,plot(x=date,y=leaves,main = "Triennial Leaves"))
+# feuilles 
+with(data=dados_tri,plot(x=date,y=feuilles,main = "Triennial feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .001,
@@ -237,7 +237,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_tri$day<-as.numeric(dados_tri$date-min(dados_tri$date,na.rm=TRUE))
 NLS_lea_tri<-nls(data=dados_tri, formula = 
-                   leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                   feuilles~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                  start=c(a = 365, 
                          b = .001,
                          c = 100,
@@ -246,8 +246,8 @@ NLS_lea_tri<-nls(data=dados_tri, formula =
 predNLS_lea_tri<-predict(NLS_lea_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_tri,col="#FF007F")
 
-# Twigs 
-with(data=dados_tri,plot(x=date,y=twigs,main = "Triennial twigs"))
+# branches 
+with(data=dados_tri,plot(x=date,y=branches,main = "Triennial branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = .0001,
@@ -258,7 +258,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_tri$day<-as.numeric(dados_tri$date-min(dados_tri$date,na.rm=TRUE))
 NLS_twg_tri<-nls(data=dados_tri, formula = 
-                   twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                   branches~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                  start=c(a = 360, 
                          b = .0001,
                          c = 100,
@@ -293,8 +293,8 @@ NLS_tot_ct_an<-nls(data=dados_ct_an, formula =
 predNLS_tot_ct_an<-predict(NLS_tot_ct_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_an,col="cyan")
 
-# Leaves 
-with(data=dados_ct_an,plot(x=date,y=leaves,main = "control_an Leaves"))
+# feuilles 
+with(data=dados_ct_an,plot(x=date,y=feuilles,main = "control_an feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
@@ -305,7 +305,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_ct_an$day<-as.numeric(dados_ct_an$date-min(dados_ct_an$date,na.rm=TRUE))
 NLS_lea_ct_an<-nls(data=dados_ct_an, formula = 
-                     leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                     feuilles~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
                            b = 0,
                            c = 100,
@@ -315,8 +315,8 @@ NLS_lea_ct_an<-nls(data=dados_ct_an, formula =
 predNLS_lea_ct_an<-predict(NLS_lea_ct_an,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_an,col="#FF007F")
 
-# Twigs 
-with(data=dados_ct_an,plot(x=date,y=twigs,main = "control_an twigs"))
+# branches 
+with(data=dados_ct_an,plot(x=date,y=branches,main = "control_an branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
@@ -327,7 +327,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_ct_an$day<-as.numeric(dados_ct_an$date-min(dados_ct_an$date,na.rm=TRUE))
 NLS_twg_ct_an<-nls(data=dados_ct_an, formula = 
-                     twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                     branches~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
                            b = 0,
                            c = 100,
@@ -363,8 +363,8 @@ NLS_tot_ct_bi<-nls(data=dados_ct_bi, formula =
 predNLS_tot_ct_bi<-predict(NLS_tot_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_bi,col="cyan")
 
-# Leaves 
-with(data=dados_ct_bi,plot(x=date,y=leaves,main = "control_bi Leaves"))
+# feuilles 
+with(data=dados_ct_bi,plot(x=date,y=feuilles,main = "control_bi feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
@@ -375,7 +375,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_lea_ct_bi<-nls(data=dados_ct_bi, formula = 
-                     leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                     feuilles~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
                            b = 0,
                            c = 100,
@@ -385,8 +385,8 @@ NLS_lea_ct_bi<-nls(data=dados_ct_bi, formula =
 predNLS_lea_ct_bi<-predict(NLS_lea_ct_bi,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_bi,col="#FF007F")
 
-# Twigs 
-with(data=dados_ct_bi,plot(x=date,y=twigs,main = "control_bi twigs"))
+# branches 
+with(data=dados_ct_bi,plot(x=date,y=branches,main = "control_bi branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
@@ -397,7 +397,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_ct_bi$day<-as.numeric(dados_ct_bi$date-min(dados_ct_bi$date,na.rm=TRUE))
 NLS_twg_ct_bi<-nls(data=dados_ct_bi, formula = 
-                     twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                     branches~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                    start=c(a = 365, 
                            b = 0,
                            c = 100,
@@ -434,8 +434,8 @@ NLS_tot_ct_tri<-nls(data=dados_ct_tri, formula =
 predNLS_tot_ct_tri<-predict(NLS_tot_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_tot_ct_tri,col="cyan")
 
-# Leaves 
-with(data=dados_ct_tri,plot(x=date,y=leaves,main = "control_tri Leaves"))
+# feuilles 
+with(data=dados_ct_tri,plot(x=date,y=feuilles,main = "control_tri feuilles"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 365, 
                           b = 0,
@@ -446,7 +446,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_lea_ct_tri<-nls(data=dados_ct_tri, formula = 
-                      leaves~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                      feuilles~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                     start=c( a = 365, 
                              b = 0,
                              c = 100,
@@ -456,8 +456,8 @@ NLS_lea_ct_tri<-nls(data=dados_ct_tri, formula =
 predNLS_lea_ct_tri<-predict(NLS_lea_ct_tri,newdata=data.frame(day=as.numeric(ListDate-min(ListDate))))
 lines(x=ListDate,y=predNLS_lea_ct_tri,col="#FF007F")
 
-# Twigs 
-with(data=dados_ct_tri,plot(x=date,y=twigs,main = "control_tri twigs"))
+# branches 
+with(data=dados_ct_tri,plot(x=date,y=branches,main = "control_tri branches"))
 lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
                           a = 400, 
                           b = 0,
@@ -468,7 +468,7 @@ lines(x=ListDate,y=myFunc(x=as.numeric(ListDate-min(ListDate)),
 
 dados_ct_tri$day<-as.numeric(dados_ct_tri$date-min(dados_ct_tri$date,na.rm=TRUE))
 NLS_twg_ct_tri<-nls(data=dados_ct_tri, formula = 
-                      twigs~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
+                      branches~myFunc(x=day, a = a, b = b, c = c, Base=Base, p=p, A=A),
                     start=c(a = 400, 
                             b = 0,
                             c = 100,
@@ -510,19 +510,32 @@ legend("topright", legend = c("Annual", "Biennial", "Triennial",
 ###### Total Litterfall #####
 
 ### Annual vs Control 
+dates_an <- as.Date(c("2018-07-28", "2019-07-11",
+                            "2020-07-31", "2021-09-22", 
+                            "2022-09-09", "2023-09-12"))
+
 dados_comp_an <- Mean %>%
   filter(fire_regime %in% c("annual","control_an"))
 
 with(data=dados_comp_an,plot(x=date,y=total,
-                             main = "Annual vs Control Total_litterfall",
-                             col = c("annual"="red","control_an"= "black"),
-                             pch = c("annual"= 17, "control_an" = 0) , cex = 0.6)) 
-lines(x=ListDate,y=predNLS_tot_an,col = "red", lwd=1)
-lines(x=ListDate,y=predNLS_tot_ct_an, col = "black",lwd=1,lty=2)
-legend("topright", legend = c("Annual", "Control_an", "Annual Prediction", "Control_an Prediction"), 
-       pch = c(17, 0, NA, NA), col = c("red", "black", "red", "black"),
-       lty = c(NA, NA, 1, 2), title = "Fire Regime",
-       cex = 0.5)
+                             xlab = "Dates de collectes (en jours)",
+                             ylab = "Mean NPP (MgC/ha.an)",
+                             ylim = c(0,12),
+                             col = c("Annuel"="green","control_an"= "black"),
+                             pch = c("Annuel"= 15, "control_an" = 0),
+                             las = 1, cex = 0.6)) 
+lines(x=ListDate,y=predNLS_tot_an,col = "green", lwd=1)
+lines(x=ListDate,y=predNLS_tot_ct_an, col = "black",lty = 2, lwd = 1)
+for (date in dates_an) {
+  abline(v = date, col = "red", lty = 2)}
+
+par(mar = c(5, 4, 4, 10))
+
+legend("topright",inset = c(-0.63, 0), legend = c("Annuel", "Control_an", "Prédiction Annuelle", "Prédiction Control_an", "Dates d'incendies"), 
+       pch = c(17, 0, NA, NA,NA), col = c("green", "black", "green", "black","red"), 
+       lty = c(NA, NA, 1, 2,2), title = "Légendes :",
+       cex = 0.85, xpd = TRUE)
+
 
 ##### Biennial vs Control
 dados_comp_bi <- Mean %>%
@@ -540,25 +553,37 @@ legend("topright", legend = c("Biennial", "Control_bi", "Biennial Prediction", "
        cex = 0.5)
 
 #### Triennial vs Control
+dates_tri <- as.Date(c("2018-07-29", "2021-09-22"))
+
 dados_comp_tri <- Mean %>%
   filter(fire_regime %in% c("triennial","control_tri"))
 
 with(data=dados_comp_tri,plot(x=date,y=total,
-                              main = "Triennial vs Control Total_litterfall",
-                              col = c("triennial"="blue","control_tri"= "black"),
-                              pch = c("triennial"=17,"control_tri"= 0), cex = .6)) 
+                              xlab = "Dates de collectes (en jours)",
+                              ylab = "Mean NPP (MgC/ha.an)",
+                              ylim = c(0,12),
+                              col = c("Trisannuel"="blue","control_tri"= "black"),
+                              pch = c("Trisannuel"=17,"control_tri"= 2), 
+                              las = 1, cex = .6)) 
 lines(x=ListDate,y=predNLS_tot_tri,col = "blue",lwd=1)
-lines(x=ListDate,y=predNLS_tot_ct_tri, col = "black", lty = 2, lwd = 1)
-legend("topright", legend = c("Triennial", "Control_tri", "Triennial Prediction", "Control_tri Prediction"), 
-       pch = c(17, 0, NA, NA), col = c("blue", "black", "blue", "black"),
-       lty = c(NA, NA, 1, 2), title = "Fire Regime",
-       cex = 0.6)
+lines(x=ListDate,y=predNLS_tot_ct_tri, col = "black", lty = 3, lwd = 1)
+for (date in dates_tri) {
+  abline(v = date, col = "red", lty = 2)}
+par(mar = c(5, 4, 4, 10))
 
-###### Leaves ####
+legend("topright",inset = c(-0.65, 0), 
+       legend = c("Trisannuel", "Control_tri", 
+                  "Prédiction Trisannuelle", "Prédiction Control_tri",
+                  "Dates d'incendies"), 
+       pch = c(17, 2, NA, NA,NA), col = c("blue", "black", "blue", "black", "red"),
+       lty = c(NA, NA, 1, 3,2), title = "Légendes :",
+       cex = 0.85, xpd = TRUE)
+
+###### feuilles ####
 
 #### Annual vs Control
-with(data=dados_comp_an,plot(x=date,y=leaves,
-                             main = "Annual vs Control Leaves",
+with(data=dados_comp_an,plot(x=date,y=feuilles,
+                             main = "Annual vs Control feuilles",
                              col = c("annual"="red","control_an"= "black"),
                              pch =  c("annual"= 18, "control_an" = 0), cex = 0.6)) 
 lines(x=ListDate,y=predNLS_lea_an,col = "red", lwd=1)
@@ -569,8 +594,8 @@ legend("topright", legend = c("Annual", "Control_an", "Annual Prediction", "Cont
        cex = 0.5)
 
 #### Biennial vs Control
-with(data=dados_comp_bi,plot(x=date,y=leaves,
-                             main = "Biennial vs Control Leaves",
+with(data=dados_comp_bi,plot(x=date,y=feuilles,
+                             main = "Biennial vs Control feuilles",
                              col = c("biennial"="green","control_bi"= "black"),
                              pch =c("biennial" = 18, "control_bi"=0), cex = .6)) 
 lines(x=ListDate,y=predNLS_lea_bi,col = "green",lwd=1)
@@ -581,8 +606,8 @@ legend("topright", legend = c("Biennial", "Control_bi", "biennial Prediction", "
        cex = 0.6)
 
 #### Triennial vs Control
-with(data=dados_comp_tri,plot(x=date,y=leaves,
-                              main = "Triennial vs Control Leaves",
+with(data=dados_comp_tri,plot(x=date,y=feuilles,
+                              main = "Triennial vs Control feuilles",
                               col = c("triennial"="blue","control_tri"= "black"),
                               pch =c("triennial" = 18, "control_tri"=0), cex = .6)) 
 lines(x=ListDate,y=predNLS_lea_tri,col = "blue",lwd=1)
@@ -592,11 +617,11 @@ legend("topright", legend = c("Triennial", "Control_tri", "triennial Prediction"
        lty = c(NA, NA, 1, 2), title = "Fire Regime",
        cex = 0.6)
 
-###### Twigs ####
+###### branches ####
 
 #### Annual vs Control
-with(data=dados_comp_an,plot(x=date,y=twigs,
-                             main = "Annual vs Control Twigs",
+with(data=dados_comp_an,plot(x=date,y=branches,
+                             main = "Annual vs Control branches",
                              col = c("annual"="red","control_an"= "black"),
                              pch = c("annual" = 10, "control_an"=0), cex = 0.6)) 
 lines(x=ListDate,y=predNLS_twg_an,col = "red", lwd=1)
@@ -607,8 +632,8 @@ legend("topright", legend = c("Annual", "Control_an", "Annual Prediction", "Cont
        cex = 0.5)
 
 #### Biennial vs Control
-with(data=dados_comp_bi,plot(x=date,y=twigs,
-                             main = "Biennial vs Control Twigs",
+with(data=dados_comp_bi,plot(x=date,y=branches,
+                             main = "Biennial vs Control branches",
                              col = c("biennial"="green","control_bi"= "black"),
                              pch =c("biennial" = 10, "control_bi"=0), cex = .6)) 
 lines(x=ListDate,y=predNLS_twg_bi,col = "green",lwd=1)
@@ -619,8 +644,8 @@ legend("topright", legend = c("Biennial", "Control_bi", "Biennial Prediction", "
        cex = 0.6)
 
 #### Triennial vs Control
-with(data=dados_comp_tri,plot(x=date,y=twigs,
-                              main = "Triennial vs Control Twigs",
+with(data=dados_comp_tri,plot(x=date,y=branches,
+                              main = "Triennial vs Control branches",
                               col = c("triennial"="blue","control_tri"= "black"),
                               pch =c("triennial" = 10, "control_tri"=0), cex = .6)) 
 lines(x=ListDate,y=predNLS_twg_tri,col = "blue",lwd=1)
@@ -629,3 +654,4 @@ legend("topright", legend = c("Triennial", "Control_tri", "Triennial Prediction"
        pch = c(10, 0, NA, NA), col = c("blue", "black", "blue", "black"),
        lty = c(NA, NA, 1, 2), title = "Fire Regime",
        cex = 0.6)
+

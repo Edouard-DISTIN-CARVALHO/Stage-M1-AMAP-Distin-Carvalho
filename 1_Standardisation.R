@@ -6,7 +6,6 @@
 
 
 getwd()
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Dados") # AMAP
 setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Dados") #GalaxyBook
 
 library(dplyr)
@@ -43,21 +42,21 @@ dados_basal_2  <- dados_basal_2  %>%  mutate(fire_regime = plot_code)
 names(dados_basal_2 )[names(dados_basal_2 ) == "dados_basal_2$fire_regime"] <- "fire_regime"
 dados_basal_2$fire_regime <- factor(dados_basal_2$fire_regime, 
                                     levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
-                                    labels = c("control_tri", "biennial", "control_bi", "triennial", "control_an", "annual"))
+                                    labels = c("Control_tri", "Bisannuel", "Control_bi", "Trisannuel", "Control_an", "Annuel"))
 
-color <- c("control_bi" = "green", "biennial" = "green",
-           "control_tri" = "blue", "triennial" = "blue",
-           "control_an" = "red", "annual" = "red")
+color <- c("Control_bi" = "green", "Bisannuel" = "green",
+           "Control_tri" = "blue", "Trisannuel" = "blue",
+           "Control_an" = "red", "Annuel" = "red")
 
-linetype <- c("control_bi" = "solid", "biennial" = "dashed",
-              "control_tri" = "solid", "triennial" = "dashed",
-              "control_an" = "solid", "annual" = "dashed")
+linetype <- c("Control_bi" = "dashed", "Bisannuel" = "solid",
+              "Control_tri" = "dashed", "Trisannuel" = "solid",
+              "Control_an" = "dashed", "Annuel" = "solid")
 
 dados_basal_tot  <- dados_basal_tot  %>%  mutate(fire_regime = plot_code)
 names(dados_basal_tot )[names(dados_basal_tot ) == "dados_basal_tot$fire_regime"] <- "fire_regime"
 dados_basal_tot$fire_regime <- factor(dados_basal_tot$fire_regime, 
                                       levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
-                                      labels = c("control_tri", "biennial", "control_bi", "triennial", "control_an", "annual"))
+                                      labels = c("Control_tri", "Bisannuel", "Control_bi", "Trisannuel", "Control_an", "Annuel"))
 
 
 ggplot(dados_basal_tot, aes(x = year, y = somme_basal_area, color = fire_regime, 
@@ -69,6 +68,11 @@ ggplot(dados_basal_tot, aes(x = year, y = somme_basal_area, color = fire_regime,
        linetype = "Type de parcelle") +  
   theme_classic()
 
+dados_basal_2$fire_regime <- factor(dados_basal_2$fire_regime, 
+                                    levels = c("Annuel", "Control_an", 
+                                               "Bisannuel", "Control_bi",
+                                               "Trisannuel", "Control_tri"))
+
 ggplot(dados_basal_2, aes(x = year, y = somme_basal_area, 
                           color = fire_regime, 
                           linetype = fire_regime)) + 
@@ -76,7 +80,8 @@ ggplot(dados_basal_2, aes(x = year, y = somme_basal_area,
   geom_point(aes(group = interaction(fire_regime, plot_code))) +
   scale_color_manual(values = color) + 
   scale_linetype_manual(values = linetype) +
-  labs(x = "Années", y = "Aire Basale (m²/an)", color = "Type de parcelle", 
+  labs(title = "Evolution de l'aire basale totale des parcelles au cours du temps",
+  x = "Années", y = "Aire Basale (m²)", color = "Type de parcelle", 
        linetype = "Type de parcelle") +  
   theme_classic()
 
@@ -96,7 +101,7 @@ dados <- dados %>%  mutate(fire_regime = plot_code)
 names(dados)[names(dados) == "dados$fire_regime"] <- "fire_regime"
 dados$fire_regime <- factor(dados$fire_regime,
                             levels = c("ESA-04", "ESA-05", "ESA-06", "ESA-07", "ESA-08", "ESA-09"),
-                            labels = c("control_tri", "biennial", "control_bi", "triennial", "control_an", "annual"))
+                            labels = c("Control_tri", "Bisannuel", "Control_bi", "Trisannuel", "Control_an", "Annuell"))
 
 # Boucle de Normalisation : NPP/Aire Basale pour chaque parcelle de chaque année
 dados_norm <- dados

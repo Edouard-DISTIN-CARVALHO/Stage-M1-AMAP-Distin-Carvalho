@@ -5,8 +5,8 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 getwd()
-setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
-#setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
+#setwd("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git") # AMAP
+setwd("C:/Users/edoua/OneDrive/Documents/R/AMAP/Git") # Galaxybook
 source("3_ Saisonalite.R")
 
 library(dplyr)
@@ -510,74 +510,62 @@ legend("topright", legend = c("Annual", "Biennial", "Triennial",
 ###### Total Litterfall #####
 
 ### Annual vs Control 
-dates_an <- as.Date(c("2018-07-28", "2019-07-11",
-                            "2020-07-31", "2021-09-22", 
-                            "2022-09-09", "2023-09-12"))
-
 dados_comp_an <- Mean %>%
   filter(fire_regime %in% c("annual","control_an"))
 
-with(data=dados_comp_an,plot(x=date,y=total,
-                             xlab = "Dates de collectes (en jours)",
-                             ylab = "Mean NPP (MgC/ha.an)",
-                             ylim = c(0,12),
-                             col = c("Annuel"="green","control_an"= "black"),
-                             pch = c("Annuel"= 15, "control_an" = 0),
-                             las = 1, cex = 0.6)) 
-lines(x=ListDate,y=predNLS_tot_an,col = "green", lwd=1)
-lines(x=ListDate,y=predNLS_tot_ct_an, col = "black",lty = 2, lwd = 1)
-for (date in dates_an) {
-  abline(v = date, col = "red", lty = 2)}
-
-par(mar = c(5, 4, 4, 10))
-
-legend("topright",inset = c(-0.63, 0), legend = c("Annuel", "Control_an", "Prédiction Annuelle", "Prédiction Control_an", "Dates d'incendies"), 
-       pch = c(17, 0, NA, NA,NA), col = c("green", "black", "green", "black","red"), 
-       lty = c(NA, NA, 1, 2,2), title = "Légendes :",
-       cex = 0.85, xpd = TRUE)
-
+with(data=dados_comp_an,plot(x=date,y=total,ylab = "Moyenne de productivité primaire (MgC/ha.an)", 
+                             xlab = "Date de collecte (jours)",
+                             col = c("annual"="red","control_an"= "black"),
+                             pch = c("annual"= 17, "control_an" = 0) , 
+                             cex = 0.6, cex.lab = 0.7,
+                             las=1, ylim=c(0,12))) 
+lines(x=ListDate,y=predNLS_tot_an,col = "red", lwd=1)
+lines(x=ListDate,y=predNLS_tot_ct_an, col = "black",lwd=1,lty=2)
+legend("topright", legend = c("Annuel", "Control_an", 
+                              "Prédiction Annuel", "Prédiction Control_an"), 
+       pch = c(17, 0, NA, NA), col = c("red", "black", "red", "black"),
+       lty = c(NA, NA, 1, 2), title = "Régime de feu",
+       cex = 0.5)
 
 ##### Biennial vs Control
 dados_comp_bi <- Mean %>%
   filter(fire_regime %in% c("biennial","control_bi"))
 
-with(data=dados_comp_bi,plot(x=date,y=total,
-                             main = "Biennial vs Control Total_litterfall",
-                             col = c("biennial"="green","control_bi"= "black"),
-                             pch =c("biennial" = 17, "control_bi"=0), cex = .6)) 
-lines(x=ListDate,y=predNLS_tot_bi,col = "green",lwd=1)
-lines(x=ListDate,y=predNLS_tot_ct_bi, col = "black", lty= 2, lwd = 1)
-legend("topright", legend = c("Biennial", "Control_bi", "Biennial Prediction", "Control_bi Prediction"), 
-       pch = c(17, 0, NA, NA), col = c("green", "black", "green", "black"),
-       lty = c(NA, NA, 1, 2), title = "Fire Regime",
-       cex = 0.5)
+
+with(data=dados_comp_an,plot(x=date,y=total,ylab = "Moyenne de productivité primaire (MgC/ha.an)", 
+                             xlab = "Date de collecte (jours)",
+                             col = c("bisannuel"="green","control_an"= "black"),
+                             pch = c("bisannuel"= 17, "control_an" = 0) , 
+                             cex = 0.6, cex.lab = 0.7,
+                             las=1, ylim=c(0,12))) 
+lines(x=ListDate,y=predNLS_tot_an,col = "green", lwd=2)
+lines(x=ListDate,y=predNLS_tot_ct_an, col = "black",lwd=2,lty=2)
+legend("topright",inset = c(-0, -0.4), legend = c("bisannuel", "Control_an", 
+                                                  "Prédiction bisannuel", "Prédiction Control_an", "Date d'incendies"), 
+       pch = c(17, 0, NA, NA,NA), col = c("green", "black", "green", "black", "red"),
+       lty = c(NA, NA, 1, 2,2), title = "Régime de feu",
+       cex = 0.5, xpd = TRUE, bty = "n")
+dates_to_mark <- as.Date(c("2019-07-12", "2021-09-23", "2023-09-11"))
+for (date in dates_to_mark) {
+  abline(v = date, col = "red", lty = 2)
+}
 
 #### Triennial vs Control
-dates_tri <- as.Date(c("2018-07-29", "2021-09-22"))
-
 dados_comp_tri <- Mean %>%
   filter(fire_regime %in% c("triennial","control_tri"))
 
-with(data=dados_comp_tri,plot(x=date,y=total,
-                              xlab = "Dates de collectes (en jours)",
-                              ylab = "Mean NPP (MgC/ha.an)",
-                              ylim = c(0,12),
-                              col = c("Trisannuel"="blue","control_tri"= "black"),
-                              pch = c("Trisannuel"=17,"control_tri"= 2), 
-                              las = 1, cex = .6)) 
+with(data=dados_comp_tri,plot(x=date,y=total,ylab = "Moyenne de productivité primaire (MgC/ha.an)", 
+                              xlab = "Date de collecte (jours)",
+                              col = c("triennial"="blue","control_tri"= "black"),
+                              pch = c("triennial"=17,"control_tri"= 0), cex = .6,
+                              cex.lab = 0.7,
+                              las=1, ylim=c(0,12))) 
 lines(x=ListDate,y=predNLS_tot_tri,col = "blue",lwd=1)
-lines(x=ListDate,y=predNLS_tot_ct_tri, col = "black", lty = 3, lwd = 1)
-for (date in dates_tri) {
-  abline(v = date, col = "red", lty = 2)}
-par(mar = c(5, 4, 4, 10))
-
-legend("topright",inset = c(-0.65, 0), 
-       legend = c("Trisannuel", "Control_tri", 
-                  "Prédiction Trisannuelle", "Prédiction Control_tri",
-                  "Dates d'incendies"), 
-       pch = c(17, 2, NA, NA,NA), col = c("blue", "black", "blue", "black", "red"),
-       lty = c(NA, NA, 1, 3,2), title = "Légendes :",
-       cex = 0.85, xpd = TRUE)
+lines(x=ListDate,y=predNLS_tot_ct_tri, col = "black", lty = 2, lwd = 1)
+legend("topright", legend = c("Trisannuel", "Control_tri", "Prédiction Trisannuel", "Prédiction Control_tri"), 
+       pch = c(17, 0, NA, NA), col = c("blue", "black", "blue", "black"),
+       lty = c(NA, NA, 1, 2), title = "Régime de feu",
+       cex = 0.5)
 
 ###### feuilles ####
 
@@ -603,7 +591,7 @@ lines(x=ListDate,y=predNLS_lea_ct_bi, col = "black", lty = 2, lwd = 1)
 legend("topright", legend = c("Biennial", "Control_bi", "biennial Prediction", "Control_bi Prediction"), 
        pch = c(18, 0, NA, NA), col = c("green", "black", "green", "black"),
        lty = c(NA, NA, 1, 2), title = "Fire Regime",
-       cex = 0.6)
+       cex = 0.6, xpd = TRUE, bty = "n")
 
 #### Triennial vs Control
 with(data=dados_comp_tri,plot(x=date,y=feuilles,

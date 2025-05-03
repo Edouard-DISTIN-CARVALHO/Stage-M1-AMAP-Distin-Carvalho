@@ -2,35 +2,35 @@
 
 M1 Biodiversité Ecologie Evolution parcours Ecosystèmes : Ecologie fonctionnelle et conceptualisation des écosystèmes aquatiques et terrestres
 
-Laboratoire : UMR AMAP - IRD
+Laboratory: UMR AMAP - IRD
 
-Encadrante: Imma Oliveras Menor
+Supervisor: Imma Oliveras Menor
 
-**Sujet : La productivité primaire des litières des feuilles soumis à un régime de feu dans le biome Cerrado au Brésil.**
+**Topic:** Primary productivity of leaf litter subjected to fire regimes in the Cerrado biome in Brazil.
 
-*Question :* *Sous quelle fréquence de feu la productivité primaire des litières est la plus importante ?*\
-*Comment les végétaux se sont adaptés à ces régimes de feu ?*
+*Research Question:* *Under which fire frequency is primary productivity of leaf litter the highest?*
+*How have plants adapted to these fire regimes?*
 
-*Hypothèses :* 1) les végétaux soumis à des feux plus fréquents auraient la productivité primaire la plus hautes. 2) Les feuilles présenteraient une productivité primaire plus fortes sous un régime de feu fréquent. 3) La saison sèche présentairait des taux de productivité les plus haute à plus hautes fréquences de feu.
+*Hypotheses:* 1) Plants exposed to more frequent fires would have the highest primary productivity. 2) Leaves would show higher primary productivity under frequent fire regimes. 3) The dry season would present the highest productivity rates at higher fire frequencies.
 
-Etape du projet :
+**Project Steps:**
 
-1)  Normalisation productivité primaire avec l'aire basale
-2)  Etude de la composition des litières
-3)  Etude de la saisonnalité de la productivité primaire
+1. Standardization of primary productivity with basal area
+2. Study of litter composition
+3. Study of primary productivity seasonality
 
-## Etape 1 : Standardisation
+## Step 1: Standardization
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/1_Standardisation.R")
 
-## Etape 2 : Composition 
+## Step 2: Composition
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/2_Composition.R")
 
-## Etape 3 : Etude de la saisonnalité 
+## Step 3: Study of Seasonality
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/3_Saisonalite.R")
 
-## Etape 4 : Modélisation 
+## Step 4: Modeling
 
 source("C:/Users/distincarvalho/OneDrive/Documents/R/AMAP/Git/4_Modelisation.R")
